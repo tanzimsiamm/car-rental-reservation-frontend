@@ -1,0 +1,26 @@
+
+.custom-image-gallery .image-gallery-image {
+    height: 390px;
+    width: 450px;
+}
+
+.custom-image-gallery .image-gallery-thumbnail-image {
+    height: 70px;
+    width: 120px;
+    object-fit: contain;
+}
+
+.image-gallery-slide-wrapper{
+    margin-bottom: 15px;
+}
+
+.image-gallery-thumbnail:hover{
+    border: transparent;
+}
+.image-gallery-thumbnail.active{
+    border: 1px solid rgba(17, 18, 17, 0.285);
+    border-radius: 5px;
+}
+.image-gallery-thumbnail-inner{
+    padding: 5px;
+}
