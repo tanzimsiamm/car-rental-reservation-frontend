@@ -1,37 +1,58 @@
-
 import { Link } from "react-router-dom";
-import { AiOutlineMinus } from "react-icons/ai";
 import { TCar } from "../../../types";
 
-export default function CarCard({ car } : { car : TCar}) {
-
- const {_id, name, images, pricePerHour} = car;
-
+export default function CarCard({ car }: { car: TCar }) {
+  const { _id, name, images, pricePerHour } = car;
 
   return (
-    <div className="rounded-3xl w-full h-full flex flex-col bg-[#171A21]">
+    <div className="rounded-2xl w-full h-full flex flex-col bg-white/80 backdrop-blur-sm border border-amber-500/50 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+      {/* Image Section */}
+      <div className="p-6 pb-0 flex items-center justify-center flex-grow">
+        <div className="relative group">
+          <img
+            className="w-48 h-48 object-contain rounded-lg group-hover:scale-105 transition-transform duration-300"
+            src={images[0]}
+            alt={`${name} image`}
+          />
+          <div className="absolute inset-0 rounded-lg shadow-inner group-hover:shadow-lg transition-shadow duration-300"></div>
+        </div>
+      </div>
 
-   <div className="p-6 pb-0 flex items-center justify-center flex-grow">
-   <img className=" p-[2px] w-64 h-64 object-contain "  src={images[0]} />
-   </div>
-  
-  <div className="pt-0">
-    <h5
-      className="mb-3 text-lg font-medium leading-tight text-zinc-300  text-center uppercase flex items-center gap-2 justify-center">
-  <AiOutlineMinus/> {name} <AiOutlineMinus/> 
-    </h5>
- 
-    <h4 className="inter-regular my-3 py-2 text-zinc-400 bg-[#0F121B] text-center">Starting at <span className="text-amber-400"> {` $${pricePerHour}/ Hour`} </span> </h4>
+      {/* Details Section */}
+      <div className="p-6 pt-4 text-center">
+        <h5
+          className="mb-3 text-xl font-bold"
+          style={{
+            fontFamily: "'Poppins', sans-serif",
+            background: "linear-gradient(90deg, #F59E0B, #D97706)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            letterSpacing: "0.05em",
+          }}
+        >
+          {name}
+        </h5>
+        <h4 className="my-3 py-2 bg-gray-100/50 rounded-md text-gray-500">
+          Starting at{" "}
+          <span className="text-yellow-500 font-semibold">
+            ${pricePerHour}/Hour
+          </span>
+        </h4>
 
-    <div className="flex justify-center items-center w-full flex-grow-1">
-    <Link to={`/cars/${_id}`} className="w-full" > <button style={{borderBottomLeftRadius: '15px'}} className="bg-[#282A36] w-full px-14 md:px-6 py-2 md:py-[5px] xl:px-14 text-zinc-300 font-semibold transition-all whitespace-nowrap hover:bg-[#0F121B] text-sm md:text-base border border-zinc-600">Details </button></Link>
-
-    <Link to={`/booking/${_id}`} className="w-full" > <button style={{borderBottomRightRadius: '15px'}} className="bg-[#0F121B] w-full px-14 md:px-6 py-2 md:py-[5px] xl:px-14 text-zinc-300 font-semibold transition-all whitespace-nowrap hover:bg-[#0F121B] text-sm md:text-base border border-zinc-600">Book </button></Link>
-
-
+        {/* Buttons */}
+        <div className="flex justify-center gap-0">
+          <Link to={`/cars/${_id}`} className="w-full">
+            <button className="w-full px-6 py-2 text-white bg-red-600 rounded-l-xl hover:bg-red-700 hover:scale-105 focus:ring-2 focus:ring-yellow-500 focus:outline-none transition-transform duration-200 text-sm font-semibold border-r border-gray-300">
+              Details
+            </button>
+          </Link>
+          <Link to={`/booking/${_id}`} className="w-full">
+            <button className="w-full px-6 py-2 text-white bg-red-600 rounded-r-xl hover:bg-red-700 hover:scale-105 focus:ring-2 focus:ring-yellow-500 focus:outline-none transition-transform duration-200 text-sm font-semibold">
+              Book
+            </button>
+          </Link>
+        </div>
+      </div>
     </div>
-
-  </div>
-</div>
-  )
+  );
 }

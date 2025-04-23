@@ -1,49 +1,45 @@
+import { TruckIcon, LifebuoyIcon, ShieldCheckIcon } from "@heroicons/react/24/solid";
+
+interface IconMap {
+  [key: string]: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+}
+
+const icons: IconMap = {
+  "Diverse Vehicle Selection": TruckIcon,
+  "Top-Notch Customer Support": LifebuoyIcon,
+  "Secure Booking Process": ShieldCheckIcon,
+};
+
 const Card = ({
   service,
 }: {
-  service: { id: number; title: string; description: string; logo: string };
+  service: {
+    id: number;
+    title: string;
+    description: string;
+    icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  };
 }) => {
-  const darkMode = true;
-
-  const { title, id, description, logo } = service;
+  const { title, description } = service;
+  const Icon = icons[title];
 
   return (
-    <div
-      className={`flex flex-col gap-2 lg:gap-4 xl:gap-4 py-9 md:py-5 lg:py-10 xl:py-16 px-5 lg:px-7 xl:px-10 rounded-3xl ${
-        darkMode
-          ? id === 2
-            ? "bg-amber-500"
-            : "bg-[#171A21]"
-          : "bg-primary-gold"
-      }`}
-    >
-      <div
-        className={`w-16 h-16 lg:w-20 lg:h-20 rounded-2xl flex items-center justify-center ${
-          darkMode
-            ? id === 2
-              ? "bg-white"
-              : "bg-primary-gold"
-            : id === 2
-            ? "bg-white"
-            : ""
-        }`}
+    <div className="flex-1 bg-white/90 backdrop-blur-sm border border-amber-500/50 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 hover:border-yellow-500 transition-all duration-300 p-6 text-center">
+      {Icon && (
+        <Icon
+          className="w-12 h-12 mx-auto mb-4 text-yellow-500"
+          aria-hidden="true"
+        />
+      )}
+      <h3
+        className="text-xl font-semibold text-zinc-800 mb-2"
+        style={{ fontFamily: "'Poppins', sans-serif" }}
       >
-        {" "}
-        <img src={logo} className="w-12 lg:w-[75px]" />{" "}
-      </div>
-
-      <h4
-        className={`text-lg md:text-xl lg:text-xl xl:text-[27px] inter-medium ${
-          darkMode ? (id === 2 ? "text-black" : "text-zinc-300") : ""
-        }`}
-      >
-        {" "}
-        {title}{" "}
-      </h4>
+        {title}
+      </h3>
       <p
-        className={`text-sm lg:text-base xl:text-lg ${
-          darkMode ? (id === 2 ? "text-black" : "text-zinc-400") : ""
-        }`}
+        className="text-gray-500 text-sm md:text-base"
+        style={{ fontFamily: "'Poppins', sans-serif" }}
       >
         {description}
       </p>

@@ -1,21 +1,13 @@
 import Headroom from "react-headroom";
 import { HiOutlineMenu } from "react-icons/hi";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { HiMagnifyingGlass } from "react-icons/hi2";
 import { toast } from "sonner";
-import { MdDarkMode } from "react-icons/md";
-import { MdBrightness5 } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { logout } from "../../../redux/features/authentication/authSlice";
 import Container from "../Container";
+import DrawNavbar from "./DrawNavbar";
 
-
-type TModalProps = {
-  setDark: React.Dispatch<React.SetStateAction<boolean>>;
-  isDark: boolean;
-};
-
-export default function Navbar({ isDark, setDark }: TModalProps) {
+export default function Navbar() {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.auth.user);
   const navigate = useNavigate();
@@ -31,21 +23,31 @@ export default function Navbar({ isDark, setDark }: TModalProps) {
       <li>
         <NavLink
           to="/"
-          className={`cursor-pointer inter-thin text-[15[px]]  px-4 py-[3px] text-gray-300  transition hover:text-gray-400 border-b-gray-400`}
+          className={({ isActive }) =>
+            `text-[15px] px-4 py-2 transition-all ${
+              isActive
+                ? "text-yellow-500 border-b-2 border-yellow-500 font-semibold"
+                : "text-zinc-800 hover:text-yellow-500"
+            }`
+          }
         >
           Home
         </NavLink>
       </li>
-
       <li>
         <NavLink
           to="/cars"
-          className={`cursor-pointer inter-thin text-[15[px]]  px-4 py-[3px] text-gray-300  transition hover:text-gray-400 border-b-gray-400`}
+          className={({ isActive }) =>
+            `text-[15px] px-4 py-2 transition-all ${
+              isActive
+                ? "text-yellow-500 border-b-2 border-yellow-500 font-semibold"
+                : "text-zinc-800 hover:text-yellow-500"
+            }`
+          }
         >
           Cars
         </NavLink>
       </li>
-
       {user && (
         <li>
           <NavLink
@@ -54,28 +56,30 @@ export default function Navbar({ isDark, setDark }: TModalProps) {
                 ? "/dashboard/user-overview"
                 : "/dashboard/admin-overview"
             }
-            className={`cursor-pointer inter-thin text-[15[px]]  px-4 py-[3px] text-gray-300  transition hover:text-gray-400 border-b-gray-400`}
+            className={({ isActive }) =>
+              `text-[15px] px-4 py-2 transition-all ${
+                isActive
+                  ? "text-yellow-500 border-b-2 border-yellow-500 font-semibold"
+                  : "text-zinc-800 hover:text-yellow-500"
+              }`
+            }
           >
             Dashboard
           </NavLink>
         </li>
       )}
-
       <li>
         <NavLink
           to="/about-us"
-          className={`cursor-pointer inter-thin text-[15[px]]  px-4 py-[3px] text-gray-300  transition hover:text-gray-400 border-b-gray-400`}
+          className={({ isActive }) =>
+            `text-[15px] px-4 py-2 transition-all ${
+              isActive
+                ? "text-yellow-500 border-b-2 border-yellow-500 font-semibold"
+                : "text-zinc-800 hover:text-yellow-500"
+            }`
+          }
         >
           About Us
-        </NavLink>
-      </li>
-
-      <li>
-        <NavLink
-          to="/sign-up"
-          className={`cursor-pointer inter-thin text-[15[px]]  px-4 py-[3px] text-gray-300  transition hover:text-gray-400 border-b-gray-400`}
-        >
-          Sign Up
         </NavLink>
       </li>
     </>
@@ -83,114 +87,114 @@ export default function Navbar({ isDark, setDark }: TModalProps) {
 
   return (
     <>
-      {/* <DrawerNav/> */}
-
+      <DrawNavbar />
       <Headroom>
-        <div className={`${isDark ? " bg-[#000209]" : "bg-gray-50"}`}>
+        <div className="bg-gray-100">
           <Container>
-            <section
-              className={`flex justify-between md:pt-2  h-16 md:h-[90px]  ${
-                isDark ? "bg-[#000209]" : "bg-gray-50"
-              }`}
-            >
-              {/* logo section  */}
-              <div className="flex items-center gap-1">
-                {/* <img src='/6201330c4babde0004ca47f.png' className="w-24 md:w-32 lg:w-40 opacity-90"/> */}
-                <h3 className="text-amber-500 carter-one-regular text-2xl md:text-3xl">
-                  ZipCar
-                </h3>
-              </div>
+            <section className="flex justify-between items-center h-16 md:h-[90px]">
+              {/* Logo section */}
+              <NavLink to="/" className="flex items-center gap-2">
+                <div className="flex items-center gap-1">
+                  <svg
+                    className="w-8 h-8 text-amber-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M19 13H5v2a2 2 0 002 2h10a2 2 0 002-2v-2zM7 17v2m10-2v2m-5-6V7a3 3 0 00-3-3H9a3 3 0 00-3 3v6h12z"
+                    />
+                  </svg>
+                  <h3
+                    className="text-2xl md:text-3xl italic"
+                    style={{
+                      fontFamily: "'Poppins', sans-serif",
+                      fontWeight: 900,
+                      background: "linear-gradient(90deg, #F59E0B, #D97706)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      letterSpacing: "0.05em",
+                      textShadow: "1.5px 1.5px 3px rgba(0, 0, 0, 0.2)",
+                    }}
+                  >
+                    Car
+                    <span>
+                      <span
+                        style={{
+                          fontWeight: 950,
+                          textShadow: "2.5px 2.5px 4px rgba(0, 0, 0, 0.3)",
+                          WebkitTextStroke: "0.5px #D97706",
+                        }}
+                      >
+                        R
+                      </span>
+                      ent
+                    </span>
+                  </h3>
+                </div>
+              </NavLink>
 
-              {/* nav menu section  */}
-              <ul
-                id="nav-menu-list"
-                className="hidden lg:flex items-center lg:text-[15px] xl:text-base  lg:gap-3 xl:gap-6 menu-horizontal px-1"
-              >
+              {/* Desktop navigation menu */}
+              <ul className="hidden lg:flex items-center text-[15px] gap-6">
                 {navLinks}
               </ul>
 
-              <div className="flex items-center justify-center  gap-2 z-50">
-                {/* cart  */}
-                <div className="mr-3 md:mr-5 rounded-full text-xl md:text-[22px] lg:text-2xl text-black flex gap-5 md:gap-6 items-center">
-                  <span>
-                    {" "}
-                    <HiMagnifyingGlass className="text-gray-300" />
-                  </span>
-                  {isDark ? (
-                    <span onClick={() => setDark(!isDark)}>
-                      {" "}
-                      <MdBrightness5 className="text-gray-300 cursor-pointer" />
-                    </span>
-                  ) : (
-                    <span onClick={() => setDark(!isDark)}>
-                      {" "}
-                      <MdDarkMode className="text-gray-300 cursor-pointer" />
-                    </span>
-                  )}
-
-                  <div className="dropdown dropdown-end flex items-center justify-center gap-2 z-50">
-                    {!user && (
-                      <Link to={"/sign-up"}>
-                        {" "}
-                        <button className=" px-8 text-sm mr-3 py-2 md:py-2 xl:py-3 font-semibold text-white rounded-xl transition bg-white/20 hover:bg-gray-800 whitespace-nowrap">
+              {/* Right-side controls */}
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-4">
+                  {/* User profile dropdown */}
+                  <div className="relative group">
+                    {!user ? (
+                      <Link to="/sign-up">
+                        <button className="px-6 py-2 text-sm font-semibold text-white bg-red-600 rounded-xl hover:bg-red-700 transition">
                           Sign Up
                         </button>
                       </Link>
-                    )}
-
-                    <div className="z-30 w-9 md:w-10 rounded-full p-[2px] ">
-                      {user && (
+                    ) : (
+                      <div className="relative">
                         <img
-                          tabIndex={0}
                           src={
                             user?.image ||
                             "https://i.ibb.co/Ttgtb82/pngwing-com-15.png"
                           }
-                          className="dropdown w-9 h-7 md:w-8 md:h-8 object-cover cursor-pointer rounded-lg border border-zinc-400 p-[1px]"
+                          className="w-9 h-9 object-cover cursor-pointer rounded-full border border-gray-300 p-[1px]"
+                          alt="User avatar"
                         />
-                      )}
-
-                      {user && (
-                        <ul
-                          tabIndex={0}
-                          className={`dropdown-content p-2 shadow bg-zinc-100 rounded w-52 `}
-                        >
-                          {user && (
-                            <li className="text-lg p-2 border-b rounded text-zinc-800 flex items-center gap-2">
-                              {" "}
-                              {user?.name || "User"}{" "}
-                              <img
-                                tabIndex={0}
-                                src={
-                                  user?.image ||
-                                  "https://i.ibb.co/Ttgtb82/pngwing-com-15.png"
-                                }
-                                className="w-8 h-8 object-cover rounded-full border border-gray-300 p-[1px]"
-                              />
-                            </li>
-                          )}
-
+                        <ul className="absolute right-0 mt-2 w-52 bg-white shadow-lg rounded-lg p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                          <li className="text-base p-2 border-b text-zinc-800 flex items-center gap-2">
+                            {user?.name || "User"}
+                            <img
+                              src={
+                                user?.image ||
+                                "https://i.ibb.co/Ttgtb82/pngwing-com-15.png"
+                              }
+                              className="w-8 h-8 object-cover rounded-full border border-gray-300 p-[1px]"
+                              alt="User avatar"
+                            />
+                          </li>
                           <li
-                            className="text-base inter-regular cursor-pointer transition-all text-zinc-800 p-1 rounded hover:underline"
+                            className="text-base text-zinc-800 p-2 rounded hover:bg-gray-200 cursor-pointer transition"
                             onClick={logoutUser}
                           >
-                            {" "}
                             Log out
                           </li>
                         </ul>
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
                 </div>
 
-                {/* label for open daisy ui drawer that component has another file  */}
+                {/* Mobile menu button */}
                 <label
                   htmlFor="my-drawer"
-                  className={`lg:hidden text-xl md:text-2xl text-zinc-200`}
+                  className="lg:hidden text-2xl text-zinc-800 cursor-pointer"
                 >
-                  <HiOutlineMenu />{" "}
+                  <HiOutlineMenu />
                 </label>
-                {/* <DrawNavbar /> */}
               </div>
             </section>
           </Container>
