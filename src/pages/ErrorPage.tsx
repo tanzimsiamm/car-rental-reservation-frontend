@@ -1,29 +1,54 @@
-
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { FaExclamationTriangle } from "react-icons/fa";
 
 const ErrorPage = () => {
+  const location = useLocation();
+  const errorMessage = location.state?.errorMessage || null;
+
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-[#212433]">
-      <div className="text-center">
-        <h1 className="text-9xl font-bold text-red-500">404</h1>
-        <h2 className="text-3xl font-semibold text-gray-300 mt-4">
-          Oops! Page not found.
-        </h2>
-        <p className="text-gray-400 mt-2">
-          The page you are looking for might have been removed, had its name
-          changed, or is temporarily unavailable.
-        </p>
-        <div className="mt-6">
-          <Link to="/" className="btn btn-primary bg-gray-700 hover:bg-gray-800 mx-2 border-none">
-            Home
+    <section className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-center px-4">
+      <div className="max-w-md mx-auto">
+        <div className="mb-6">
+          <FaExclamationTriangle className="text-red-600 text-6xl mx-auto" />
+          <h1
+            className="text-7xl md:text-9xl font-bold text-zinc-800 mt-4"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            404
+          </h1>
+          <h2
+            className="text-2xl md:text-3xl font-semibold text-zinc-800 mt-4"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            {errorMessage ? "Something Went Wrong" : "Page Not Found"}
+          </h2>
+          <p
+            className="text-gray-500 mt-2 text-base md:text-lg"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            {errorMessage
+              ? errorMessage
+              : "The page you're looking for doesn't exist or has been moved. Let's get you back on track!"}
+          </p>
+        </div>
+        <div className="flex justify-center gap-4">
+          <Link
+            to="/"
+            className="bg-red-600 text-white py-2 px-6 rounded-lg font-semibold hover:bg-red-700 focus:ring-2 focus:ring-yellow-500 transition-all duration-300"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            Go to Home
           </Link>
-          <Link to="/login" className="btn btn-secondary bg-gray-700 border-none hover:bg-gray-800 mx-2">
+          <Link
+            to="/login"
+            className="bg-white/90 backdrop-blur-sm border border-amber-500/50 text-yellow-500 py-2 px-6 rounded-lg font-semibold hover:text-red-600 focus:ring-2 focus:ring-yellow-500 transition-all duration-300"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
             Login
           </Link>
         </div>
       </div>
-   
-    </div>
+    </section>
   );
 };
 

@@ -1,120 +1,324 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { Link, useNavigate } from "react-router-dom";
 import { FieldValues, useForm } from "react-hook-form";
 import { ClipLoader } from "react-spinners";
 import { useState } from "react";
 import { toast } from "sonner";
+import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { useSignUpMutation } from "../redux/features/authentication/authApi";
 
-
-// const imageHostingKey = import.meta.env.VITE_IMAGE_HOSTING_KEY;
-// const imageUploadApi = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`
-
-
 export default function SignUp() {
-  const { register, handleSubmit, formState: {errors}} = useForm();
-  const [ loading , setLoading ] = useState(false)
-  const [ signUp] = useSignUpMutation();
- 
- 
-    const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const [loading, setLoading] = useState(false);
+  const [signUp] = useSignUpMutation();
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const password = watch("password");
 
-    const onSubmit = async (data: FieldValues) => {
-      setLoading(true)
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
-     const result : any = await signUp({
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
+  const onSubmit = async (data: FieldValues) => {
+    setLoading(true);
+    const result: any = await signUp({
       ...data,
-      role :'user',
-     })
+      role: "user",
+    });
 
-     console.log(result)
-
-     if(result?.error?.data?.message){
-      toast.error('Email is already exist')
-      setLoading(false)
+    if (result?.error?.data?.message) {
+      toast.error("Email is already registered");
+      setLoading(false);
       return;
-     }
-     else if(result?.data?.success)
-      toast.success('Registered Successfully! Please Login')
-      navigate('/login');
+    } else if (result?.data?.success) {
+      toast.success("Registered Successfully! Please Login");
+      navigate("/login");
     }
-
+    setLoading(false);
+  };
 
   return (
-    <div className="hero h-[700px] md:h-[750px] px-4 ">
-    <div className="hero-content flex-col w-full gap-0">
+    <section className="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4">
+      <div className="max-w-md w-full bg-white rounded-2xl shadow-lg p-8 mx-auto">
+        <h1
+          className="text-3xl md:text-4xl font-bold text-center mb-8"
+          style={{
+            fontFamily: "'Poppins', sans-serif",
+            background: "linear-gradient(90deg, #F59E0B, #D97706)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            letterSpacing: "0.05em",
+          }}
+        >
+          Create an Account
+        </h1>
 
-    <div className="text-center lg:text-left pt-5 rounded-l-lg">
-        <h1 className="text-[27px] lg:text-[36px] text-white/90 text-center mb-4 carter-one-regular"> Create New Account !</h1>
-      </div>
-
-      <div className="rounded flex-shrink-0 w-full max-w-2xl  bg-black/20">
-        <div className= " p-6 lg:p-10">
-
-
-        <form onSubmit={handleSubmit(onSubmit)} className="text-white">
-            
-          <div className="form-control">
-            <label className="label">
-              <span className="">Name</span>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          {/* Name */}
+          <div>
+            <label
+              className="block text-sm font-medium text-gray-700 mb-1"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
+            >
+              Full Name
             </label>
-            <input type="text" placeholder="Name" className="input border border-zinc-600 focus:border-zinc-400 bg-transparent  " {...register('name',{required: true, minLength: 3, maxLength: 20})} />
-            <span className="text-red-400 font-semibold text-sm p-1"> {errors.name?.type === 'required' && 'Name is required'} {errors.name?.type === 'minLength' && 'Name Must Have 3 Characters'} {errors.name?.type === 'maxLength' && 'Name Maximum 20 Characters'}  </span>
+            <input
+              type="text"
+              placeholder="Enter your full name"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none transition-all duration-300 bg-white"
+              {...register("name", {
+                required: "Name is required",
+                minLength: {
+                  value: 3,
+                  message: "Name must be at least 3 characters",
+                },
+                maxLength: {
+                  value: 20,
+                  message: "Name cannot exceed 20 characters",
+                },
+              })}
+            />
+            {errors.name && typeof errors.name.message === "string" && (
+              <p
+                className="text-red-500 text-xs mt-1"
+                style={{ fontFamily: "'Poppins', sans-serif" }}
+              >
+                {errors.name.message}
+              </p>
+            )}
           </div>
 
-
-          <div className="form-control">
-            <label className="label">
-              <span className="">Email</span>
+          {/* Email */}
+          <div>
+            <label
+              className="block text-sm font-medium text-gray-700 mb-1"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
+            >
+              Email Address
             </label>
-            <input type="email" placeholder="Email" className="input border border-zinc-600 focus:border-zinc-400  bg-transparent " {...register('email', {required: true, pattern: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ })} />
-
-            <span className="text-red-400 font-semibold text-sm p-1">{errors.email?.type === 'required' && 'Email is required'} {errors.email?.type === 'pattern' && 'Please input a valid email'}</span>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none transition-all duration-300 bg-white"
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: "Please enter a valid email",
+                },
+              })}
+            />
+            {errors.email && typeof errors.email.message === "string" && (
+              <p
+                className="text-red-500 text-xs mt-1"
+                style={{ fontFamily: "'Poppins', sans-serif" }}
+              >
+                {errors.email.message}
+              </p>
+            )}
           </div>
 
-
-          <div className="form-control">
-            <label className="label">
-              <span className="">Password</span>
+          {/* Password */}
+          <div>
+            <label
+              className="block text-sm font-medium text-gray-700 mb-1"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
+            >
+              Password
             </label>
-            <input type="text" placeholder="Password" className="input border border-zinc-600 focus:border-zinc-400  bg-transparent " {...register('password', {required: true, pattern:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{6,8}$/ })} />
-
-            <span className="text-red-400 font-semibold text-sm p-1"> {errors.password?.type === 'required' && 'Password is required'} {errors.password?.type === 'pattern' && 'Min 1 uppercase letter, 1 lowercase letter, 1 special character, 1 number, min 6 characters, max 8 characters.'} </span>
-
-
-            <div>
-                <h4 className="text-sm font-semibold text-amber-400"> Already Have An Account? <Link to='/login'> <span className="text-white/80 underline"> Login</span></Link> </h4>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Create a password"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none transition-all duration-300 bg-white"
+                {...register("password", {
+                  required: "Password is required",
+                  pattern: {
+                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{6,8}$/,
+                    message:
+                      "Password must include 1 uppercase, 1 lowercase, 1 number, 1 special character, and be 6-8 characters long",
+                  },
+                })}
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+              </button>
             </div>
-          
+            {errors.password && typeof errors.password.message === "string" && (
+              <p
+                className="text-red-500 text-xs mt-1"
+                style={{ fontFamily: "'Poppins', sans-serif" }}
+              >
+                {errors.password.message}
+              </p>
+            )}
           </div>
 
-          <div className="form-control">
-            <label className="label">
-              <span className="">Photo URL</span>
+          {/* Confirm Password */}
+          <div>
+            <label
+              className="block text-sm font-medium text-gray-700 mb-1"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
+            >
+              Confirm Password
             </label>
-            <input type="text" placeholder="Photo URL" className="input border border-zinc-600 focus:border-zinc-400 bg-transparent  " {...register('image',{required: true})} />
-            <span className="text-red-400 font-semibold text-sm p-1"> {errors.image?.type === 'required' && 'Image is required'}  </span>
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirm your password"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none transition-all duration-300 bg-white"
+                {...register("confirmPassword", {
+                  required: "Please confirm your password",
+                  validate: (value) => value === password || "Passwords do not match",
+                })}
+              />
+              <button
+                type="button"
+                onClick={toggleConfirmPasswordVisibility}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+              >
+                {showConfirmPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+              </button>
+            </div>
+            {errors.confirmPassword && typeof errors.confirmPassword.message === "string" && (
+              <p
+                className="text-red-500 text-xs mt-1"
+                style={{ fontFamily: "'Poppins', sans-serif" }}
+              >
+                {errors.confirmPassword.message}
+              </p>
+            )}
           </div>
 
-
-          <div className="form-control mt-6">
-            <button className="bg-zinc-700 py-2 px-3 text-zinc-200 rounded font-bold transition-all flex justify-center items-center hover:bg-zinc-600 text-sm md:text-base" type="submit"> {loading? <ClipLoader
-           color='#ffffff'
-           loading={loading}
-          className=""
-           size={25}
-           aria-label="Loading Spinner"
-           speedMultiplier={0.8} /> : 'Sign Up '} 
-     </button>
+          {/* Phone Number */}
+          <div>
+            <label
+              className="block text-sm font-medium text-gray-700 mb-1"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
+            >
+              Phone Number (Optional)
+            </label>
+            <input
+              type="tel"
+              placeholder="Enter your phone number"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none transition-all duration-300 bg-white"
+              {...register("phoneNumber", {
+                pattern: {
+                  value: /^[0-9]{10,15}$/,
+                  message: "Please enter a valid phone number",
+                },
+              })}
+            />
+            {errors.phoneNumber && typeof errors.phoneNumber.message === "string" && (
+              <p
+                className="text-red-500 text-xs mt-1"
+                style={{ fontFamily: "'Poppins', sans-serif" }}
+              >
+                {errors.phoneNumber.message}
+              </p>
+            )}
           </div>
+
+          {/* Terms & Conditions */}
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              className="h-4 w-4 text-yellow-500 focus:ring-yellow-500 border-gray-300 rounded"
+              {...register("terms", {
+                required: "You must agree to the Terms & Conditions",
+              })}
+            />
+            <label
+              className="text-sm text-gray-700"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
+            >
+              I agree to the{" "}
+              <a
+                href="/terms"
+                target="_blank"
+                className="text-yellow-500 hover:text-red-600 underline"
+              >
+                Terms & Conditions
+              </a>
+            </label>
+          </div>
+          {errors.terms && typeof errors.terms.message === "string" && (
+            <p
+              className="text-red-500 text-xs mt-1"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
+            >
+              {errors.terms.message}
+            </p>
+          )}
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 focus:ring-2 focus:ring-yellow-500 transition-all duration-300 flex justify-center items-center disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            {loading ? (
+              <ClipLoader
+                color="#ffffff"
+                loading={loading}
+                size={25}
+                aria-label="Loading Spinner"
+                speedMultiplier={0.8}
+              />
+            ) : (
+              "Sign Up"
+            )}
+          </button>
         </form>
 
+        {/* Sign In Link */}
+        <p
+          className="text-center text-sm text-gray-500 mt-4"
+          style={{ fontFamily: "'Poppins', sans-serif" }}
+        >
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="text-yellow-500 hover:text-red-600 font-semibold underline"
+          >
+            Log In
+          </Link>
+        </p>
 
+        {/* Footer Links */}
+        <div className="mt-6 flex justify-center gap-4 text-sm">
+          <p
+            className="text-gray-500 hover:text-yellow-500 transition-all duration-300"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            Privacy Policy
+          </p>
+          <p
+            className="text-gray-500 hover:text-yellow-500 transition-all duration-300"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            Terms of Service
+          </p>
         </div>
       </div>
-    </div>
-  </div>
-  )
+    </section>
+  );
 }

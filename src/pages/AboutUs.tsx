@@ -1,110 +1,186 @@
-
-import { FaXTwitter } from "react-icons/fa6";
-import { FaTelegramPlane } from "react-icons/fa";
-import { FaLinkedinIn } from "react-icons/fa";
-import { FaFacebookF } from "react-icons/fa";
-import { FaHome } from "react-icons/fa";
+import { FaXTwitter, FaTelegram, FaLinkedinIn, FaFacebookF, FaHouse, FaLocationDot } from "react-icons/fa6";
 import { TfiEmail } from "react-icons/tfi";
 import { MdOutlinePhone } from "react-icons/md";
-import { FaLocationDot } from "react-icons/fa6";
 import Container from "../components/layout/Container";
 import OurFleet from "../components/ui/aboutUs/OurFleet";
 import TeamSection from "../components/ui/aboutUs/teamSection/TeamSection";
 
-
-
 const AboutUs = () => {
-    return (
-        <Container>
-
-{/* history  */}
-
-
-<div className="py-8">
-  <div className="py-8 rounded-lg shadow-md">
-    <h2 className="text-3xl lg:text-4xl carter-one-regular text-center mb-4 text-gray-300 ">Company History</h2>
-    <p className=" mb-4 text-gray-400 lg:text-[17px]">
-      Established in 2005, our car rental company has grown from a small, local
-      business to one of the leading car rental services in the country. Over the
-      years, we have expanded our fleet to include a wide variety of vehicles,
-      ranging from compact cars to luxury SUVs, to meet the diverse needs of our
-      customers.
-    </p>
-    <p className=" mb-4 text-gray-400 lg:text-[17px]">
-      Our commitment to providing top-notch customer service and maintaining a
-      reliable fleet has earned us a loyal customer base and numerous accolades
-      within the industry. We have always strived to innovate and adapt to the
-      changing needs of our customers, introducing new technologies and services
-      to make the rental experience as seamless as possible.
-    </p>
-    <p className=" text-gray-400 lg:text-[17px]">
-      Today, we continue to build on our legacy of excellence, ensuring that every
-      customer enjoys a safe, convenient, and enjoyable rental experience. We look
-      forward to serving you and being a part of your journey.
-    </p>
-  </div>
-</div>
-
-{/* fleet  */}
-<OurFleet/>
-
-        {/* Passion and Values of the company  */}
-
-
-        <div className="flex justify-center mt-24">
-            <img src="/pngegg (180).png" className="opacity-80 w-[700px] mb-7" />
+  return (
+    <Container>
+      {/* Company History */}
+      <section className="bg-gray-100 py-12 lg:py-20">
+        <div className="container mx-auto px-4">
+          <h2
+            className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8"
+            style={{
+              fontFamily: "'Poppins', sans-serif",
+              background: "linear-gradient(90deg, #F59E0B, #D97706)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              letterSpacing: "0.05em",
+              textShadow: "1.5px 1.5px 3px rgba(0, 0, 0, 0.3)",
+            }}
+          >
+            Our Story
+          </h2>
+          <div className="max-w-3xl mx-auto text-gray-500 text-base md:text-lg space-y-4">
+            <p style={{ fontFamily: "'Poppins', sans-serif" }}>
+              Founded in 2005, ZipCar began as a modest local rental service and has since evolved into a trusted leader in the car rental industry. Our fleet now boasts an extensive range of vehicles, from sleek compacts to luxurious SUVs, catering to every traveler's needs.
+            </p>
+            <p style={{ fontFamily: "'Poppins', sans-serif" }}>
+              Our dedication to exceptional customer service and a reliable fleet has built a loyal community and earned us industry recognition. We continuously innovate, integrating cutting-edge technology to ensure a seamless and delightful rental experience.
+            </p>
+            <p style={{ fontFamily: "'Poppins', sans-serif" }}>
+              Today, we uphold our commitment to excellence, making every journey safe, convenient, and memorable. Join us as we continue to drive the future of car rentals.
+            </p>
+          </div>
         </div>
-        
-        <div className="flex flex-col gap-5">
-         
-            <h2 className="text-3xl lg:text-4xl carter-one-regular text-center mb-4 text-gray-300 ">Our mission and values</h2>
-            <p className="text-base lg:text-xl text-gray-400"> In React One-way data binding means that data flows in a single direction: from a parent component to its children. This flow ensures that changes in the parent can affect its children, but not the other way around. Children components receive data from parents (via props), but they can't directly change that data. If a child needs to change something, it communicates with the parent by using callback functions passed as props. This setup maintains a clear and predictable flow of data, making the application easier to manage and less prone to bugs caused by conflicting data changes.</p>
-            <div className="flex items-center justify-end">
-            <button type="submit" className= "rounded-md py-1 md:py-2 outline-none border  border-gray-400 text-gray-300 px-10 hover:bg-gray-300/20"> Read More </button>
-            <time> November, 7 2023</time>
+      </section>
+
+      {/* Fleet Section */}
+      <OurFleet />
+
+      {/* Mission and Values */}
+      <section className="py-12 lg:py-20">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
+            <div className="lg:w-1/2">
+              <img
+                src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Our Mission"
+                className="w-full h-80 object-cover rounded-2xl shadow-md"
+                style={{ filter: "brightness(0.95)" }}
+                onError={(e) => {
+                  e.currentTarget.src = "https://via.placeholder.com/800x600?text=Image+Not+Found";
+                }}
+              />
             </div>
+            <div className="lg:w-1/2 flex flex-col gap-6">
+              <h2
+                className="text-3xl md:text-4xl lg:text-5xl font-bold"
+                style={{
+                  fontFamily: "'Poppins', sans-serif",
+                  background: "linear-gradient(90deg, #F59E0B, #D97706)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  letterSpacing: "0.05em",
+                  textShadow: "1.5px 1.5px 3px rgba(0, 0, 0, 0.3)",
+                }}
+              >
+                Our Mission & Values
+              </h2>
+              <p
+                className="text-gray-500 text-base md:text-lg"
+                style={{ fontFamily: "'Poppins', sans-serif" }}
+              >
+                At ZipCar, our mission is to empower every journey with freedom, reliability, and joy. We value integrity, innovation, and customer satisfaction, ensuring that every interaction reflects our commitment to excellence. Our team is driven by a passion for sustainable mobility and creating unforgettable experiences on the road.
+              </p>
+            </div>
+          </div>
         </div>
+      </section>
 
+      {/* Team Section */}
+      <TeamSection />
 
-        <TeamSection/>
-
-
-        <div className="flex flex-col lg:flex-row md:gap-8 lg:gap-10 relative lg:mt-5">
-
-{/* left side  */}
-    <div className="w-full rounded-3xl bg-cover  mt-2">
-
-    <div className="w-full h-60 md:h-[320px]">
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d116399.90657227112!2d89.79155163654143!3d24.259362611903022!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fdfb44c7eeadc1%3A0x635d437a356cefa!2sTangail%20Sadar%20Upazila!5e0!3m2!1sen!2sbd!4v1720767292885!5m2!1sen!2sbd"  className="rounded w-full h-full" loading="lazy" ></iframe>
-    </div>
-
-        <div className="p-4 space-y-2">
-        <h3 className="flex gap-5 items-center text-lg  text-gray-400 inter-normal"> <FaHome size={26} />ZipCar LTD</h3>
-
-        <h5 className="flex gap-5 items-center text-lg  text-gray-400 inter-normal"> <TfiEmail size={22} />Email :  campers77@gmail.com</h5>
-
-        <h5 className="flex gap-5 items-center text-lg  text-gray-400 inter-normal"> <MdOutlinePhone size={22} /> +88 018654545</h5>
-
-        <h5 className="flex gap-5 items-center text-lg  text-gray-400 inter-normal"> <FaLocationDot size={22} />Tangail, Bangladesh</h5>
-
-        <div className="flex gap-2 mt2">
-
-            <span className="bg-gray-300 p-2 rounded hover:bg-gray-800 transition-all hover:text-gray-200 cursor-pointer"> <FaXTwitter size={15}/> </span>
-            <span className="bg-gray-300 p-2 rounded hover:bg-gray-800 transition-all hover:text-gray-200 cursor-pointer"> <FaTelegramPlane size={15}/> </span>
-            <span className="bg-gray-300 p-2 rounded hover:bg-gray-800 transition-all hover:text-gray-200 cursor-pointer"> <FaLinkedinIn size={15}/> </span>
-            <span className="bg-gray-300 p-2 rounded hover:bg-gray-800 transition-all hover:text-gray-200 cursor-pointer"> <FaFacebookF size={15}/> </span>
+      {/* Contact Section */}
+      <section className="bg-gray-100 py-12 lg:py-20">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
+            {/* Map */}
+            <div className="lg:w-1/2">
+              <div className="w-full h-80 rounded-2xl overflow-hidden shadow-md">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d243647.3420383605!2d-74.247896728125!3d40.69714939585013!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sus!4v1720767292885!5m2!1sen!2sus"
+                  className="w-full h-full"
+                  loading="lazy"
+                  title="ZipCar Location"
+                ></iframe>
+              </div>
+            </div>
+            {/* Contact Info */}
+            <div className="lg:w-1/2 flex flex-col gap-6">
+              <h2
+                className="text-2xl md:text-3xl font-semibold text-zinc-800"
+                style={{ fontFamily: "'Poppins', sans-serif" }}
+              >
+                Get in Touch
+              </h2>
+              <div className="space-y-4">
+                <div className="flex items-center gap-4">
+                  <FaHouse className="text-yellow-500 text-2xl" />
+                  <p
+                    className="text-gray-500 text-base"
+                    style={{ fontFamily: "'Poppins', sans-serif" }}
+                  >
+                    ZipCar LTD, 1234 Broadway, Suite 567, New York, NY 10001, USA
+                  </p>
+                </div>
+                <div className="flex items-center gap-4">
+                  <TfiEmail className="text-yellow-500 text-2xl" />
+                  <p
+                    className="text-gray-500 text-base"
+                    style={{ fontFamily: "'Poppins', sans-serif" }}
+                  >
+                    Email: support@zipcar.com
+                  </p>
+                </div>
+                <div className="flex items-center gap-4">
+                  <MdOutlinePhone className="text-yellow-500 text-2xl" />
+                  <p
+                    className="text-gray-500 text-base"
+                    style={{ fontFamily: "'Poppins', sans-serif" }}
+                  >
+                    Phone: +1-800-555-1234
+                  </p>
+                </div>
+                <div className="flex items-center gap-4">
+                  <FaLocationDot className="text-yellow-500 text-2xl" />
+                  <p
+                    className="text-gray-500 text-base"
+                    style={{ fontFamily: "'Poppins', sans-serif" }}
+                  >
+                    New York, USA
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <a
+                  href="https://twitter.com"
+                  className="p-2 bg-white/90 backdrop-blur-sm rounded-full text-yellow-500 hover:text-red-600 focus:ring-2 focus:ring-yellow-500 transition-all duration-300"
+                  aria-label="Twitter"
+                >
+                  <FaXTwitter size={18} />
+                </a>
+                <a
+                  href="https://telegram.org"
+                  className="p-2 bg-white/90 backdrop-blur-sm rounded-full text-yellow-500 hover:text-red-600 focus:ring-2 focus:ring-yellow-500 transition-all duration-300"
+                  aria-label="Telegram"
+                >
+                  <FaTelegram size={18} />
+                </a>
+                <a
+                  href="https://linkedin.com"
+                  className="p-2 bg-white/90 backdrop-blur-sm rounded-full text-yellow-500 hover:text-red-600 focus:ring-2 focus:ring-yellow-500 transition-all duration-300"
+                  aria-label="LinkedIn"
+                >
+                  <FaLinkedinIn size={18} />
+                </a>
+                <a
+                  href="https://facebook.com"
+                  className="p-2 bg-white/90 backdrop-blur-sm rounded-full text-yellow-500 hover:text-red-600 focus:ring-2 focus:ring-yellow-500 transition-all duration-300"
+                  aria-label="Facebook"
+                >
+                  <FaFacebookF size={18} />
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
-        </div>
-    </div>
-
-
-</div> 
-
-
-
-        </Container>
-       
-    );
+      </section>
+    </Container>
+  );
 };
 
 export default AboutUs;

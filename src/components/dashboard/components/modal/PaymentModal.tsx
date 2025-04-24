@@ -1,16 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { ClipLoader } from "react-spinners";
-
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { MdOutlinePayment } from "react-icons/md";
-import CheckoutForm from "../../CheckOutForm";
 import { IoLocation } from "react-icons/io5";
 import { useGetSingleBookingQuery } from "../../../../redux/features/booking/bookingApi";
 import { TBooking } from "../../../../pages/Booking";
+import CheckoutForm from "../../CheckOutForm";
 
-// get stripe promise with publishable key
 const stripePromise = loadStripe(import.meta.env.VITE_PAYMENT_KEY);
 
 type TModalProps = {
@@ -24,54 +21,70 @@ export default function PaymentModal({ setOpen, bookingId }: TModalProps) {
   const booking: TBooking = data?.data;
 
   return (
-    <section className="w-screen h-screen fixed top-0 left-0 right-0 bottom-0 z-50  bg-black/30 backdrop-blur-sm flex justify-center items-center overflow-y-auto">
-      <div className="w-[400px] md:w-[600px] p-7 bg-white rounded-md relative">
-        {/* loading white layer  */}
-        {isLoading ? (
-          <div className="w-full h-full absolute top-0 left-0 right-0 bottom-0 bg-white/80 rounded-md flex justify-center items-center">
+    <section className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm overflow-y-auto">
+      <div className="w-full max-w-md md:max-w-lg bg-white rounded-2xl p-8 shadow-lg relative">
+        {isLoading && (
+          <div className="absolute inset-0 bg-white/80 rounded-2xl flex justify-center items-center">
             <ClipLoader
-              color="#000002"
+              color="#F59E0B"
               loading={isLoading}
               size={60}
               aria-label="Loading Spinner"
               speedMultiplier={0.8}
             />
           </div>
-        ) : (
-          ""
         )}
 
-        {/* car infro  */}
-        <section className="flex items-center gap-3">
-          <img
-            className="md:w-36 h-20 object-contain"
-            src={booking?.car?.images[0]}
-          />
+        {!isLoading && booking && (
+          <>
+            <section className="flex items-center gap-4 mb-6">
+              <img
+                className="w-24 h-16 object-contain"
+                src={booking?.car?.images[0] || "https://via.placeholder.com/150?text=Car+Image"}
+                alt={booking?.car?.name}
+                onError={(e) => {
+                  e.currentTarget.src = "https://via.placeholder.com/150?text=Car+Image";
+                }}
+              />
+              <div>
+                <h2
+                  className="text-lg font-semibold text-gray-800"
+                  style={{ fontFamily: "'Poppins', sans-serif" }}
+                >
+                  {booking?.car?.name || "Unknown Car"}
+                </h2>
+                <h3
+                  className="text-gray-600 flex items-center gap-1"
+                  style={{ fontFamily: "'Poppins', sans-serif" }}
+                >
+                  <IoLocation size={16} />
+                  {booking?.location || "N/A"}
+                </h3>
+              </div>
+            </section>
 
-          <div>
-            <h2 className="inter-bold text-zinc-600 text-left">
-              {booking?.car?.name}
-            </h2>
-            <h2 className=" text-zinc-600 flex items-center gap-2">
-              <IoLocation /> {booking?.location}
-            </h2>
-          </div>
-        </section>
+            <section className="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+              <div className="bg-gradient-to-r from-yellow-500 to-red-600 text-white w-16 h-16 rounded-full flex justify-center items-center -mt-12 mx-auto">
+                <MdOutlinePayment size={30} />
+              </div>
+              <h2
+                className="text-xl font-semibold text-center mt-4 mb-6"
+                style={{
+                  fontFamily: "'Poppins', sans-serif",
+                  background: "linear-gradient(90deg, #F59E0B, #D97706)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                Secure Payment
+              </h2>
 
-        {/* payment   */}
-        <section className="max-w-5xl mx-auto shadow-xl rounded-md border p-5 mt-12">
-          <div className="bg-amber-500 text-white/80 w-16 h-16 rounded-full -mt-14 mx-auto flex justify-center items-center p-2">
-            <MdOutlinePayment size={35} />
-          </div>
-          <h2 className="uppercase text-gray-500  text-[21px] font-semibold text-center my-2">
-            {" "}
-            secure payment info{" "}
-          </h2>
-
-          <Elements stripe={stripePromise}>
-            <CheckoutForm booking={booking} setOpen={setOpen} />
-          </Elements>
-        </section>
+              <Elements stripe={stripePromise}>
+                <CheckoutForm booking={booking} setOpen={setOpen} />
+              </Elements>
+            </section>
+          </>
+        )}
       </div>
     </section>
   );

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { ClipLoader } from "react-spinners";
-
 import { RiEditCircleLine } from "react-icons/ri";
 import { FcCancel } from "react-icons/fc";
 import { toast } from "sonner";
@@ -14,20 +13,18 @@ import {
 import { TBooking } from "../../../pages/Booking";
 import UpdateBookingModal from "../components/modal/UpdateBookingModal";
 import PaymentModal from "../components/modal/PaymentModal";
+import { Tooltip } from "react-tooltip";
 
 export default function MyBooking() {
   const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
   const [openPayModal, setOpenPayModal] = useState<boolean>(false);
-  const { data, isLoading: bookingsLoading } =
-    useGetUserBookingsQuery(undefined);
-  const [updateBooking, { isLoading: updateLoading }] =
-    useUpdateBookingMutation();
-  const [cancelBooking] = useCancelBookingMutation();
+  const { data, isLoading: bookingsLoading } = useGetUserBookingsQuery(undefined);
+  const [updateBooking, { isLoading: updateLoading }] = useUpdateBookingMutation();
+  const [cancelBooking, { isLoading: cancelLoading }] = useCancelBookingMutation();
   const [updateBookingId, setUpdateBookingId] = useState("");
 
   const bookings: TBooking[] = data?.data || [];
 
-  // send return request booking
   const sendReturnReq = async (bookingId: string) => {
     const currentTime = new Date();
     const hours = String(currentTime.getHours()).padStart(2, "0");
@@ -41,253 +38,281 @@ export default function MyBooking() {
 
     if (res?.data?.success) {
       toast.success("Return Request Sent");
-      location.reload();
+      window.location.reload();
     } else {
-      toast.error("Something went wrong");
+      toast.error("Failed to send return request");
     }
   };
 
-  // cancel booking
   const cancelBookingIntoDB = async (bookingId: string, carId: string) => {
     const res = await cancelBooking({ bookingId, carId });
 
     if (res?.data?.success) {
       toast.success("Booking Cancelled!");
     } else {
-      toast.error("Something went wrong");
+      toast.error("Failed to cancel booking");
     }
   };
 
   return (
-    <section className="max-w-[1300px] mx-auto px-4 my-2 md:my-6 lg:my-10 mb-10 font-prompt">
-      <div className="flex justify-center items-center mb-3">
-        <h2 className="text-2xl md:text-4xl carter-one-regular text-zinc-300 ">
+    <section className="max-w-[1500px] mx-auto px-4 py-12">
+      <div className="text-center mb-12">
+        <h2
+          className="text-3xl md:text-4xl font-bold"
+          style={{
+            fontFamily: "'Poppins', sans-serif",
+            background: "linear-gradient(90deg, #F59E0B, #D97706)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
           My Bookings
         </h2>
+        <p
+          className="mt-3 text-gray-600 md:text-lg"
+          style={{ fontFamily: "'Poppins', sans-serif" }}
+        >
+          Manage your ZipCar bookings with ease.
+        </p>
       </div>
 
-      <div className="text-right mb-7">
-        {/* update booking modal  */}
-        {openUpdateModal && (
-          <UpdateBookingModal
-            bookingId={updateBookingId}
-            open={openUpdateModal}
-            setOpen={setOpenUpdateModal}
-          />
-        )}
+      {openUpdateModal && (
+        <UpdateBookingModal
+          bookingId={updateBookingId}
+          open={openUpdateModal}
+          setOpen={setOpenUpdateModal}
+        />
+      )}
 
-        {/* payment modal  */}
-        {openPayModal && (
-          <PaymentModal
-            bookingId={updateBookingId}
-            open={openPayModal}
-            setOpen={setOpenPayModal}
-          />
-        )}
-      </div>
+      {openPayModal && (
+        <PaymentModal
+          bookingId={updateBookingId}
+          open={openPayModal}
+          setOpen={setOpenPayModal}
+        />
+      )}
 
-      <div className="flex flex-col ">
-        <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-            <div className="overflow-hidden">
-              <table className="min-w-full text-center text-sm inter-regular dark:border-neutral-500">
-                <thead className=" inter-regular ">
-                  <tr className="bg-amber-600 h-8 text-white/95 text-[12px] md:text-base ">
-                    <th
-                      scope="col"
-                      className="border-r px-6 py-0 md:py-2 lg:py-4 border-zinc-600 rounded-l-2xl"
-                    >
-                      Image
-                    </th>
-                    <th
-                      scope="col"
-                      className="border-r px-6 py-0 md:py-2 lg:py-4 border-zinc-600"
-                    >
-                      Name
-                    </th>
-
-                    <th
-                      scope="col"
-                      className="border-r px-6 py-0 md:py-2 lg:py-4 border-zinc-600"
-                    >
-                      Date
-                    </th>
-                    <th
-                      scope="col"
-                      className="border-r px-6 py-0 md:py-2 lg:py-4 border-zinc-600"
-                    >
-                      Price(1H)
-                    </th>
-                    <th
-                      scope="col"
-                      className="border-r px-6 py-0 md:py-2 lg:py-4 border-zinc-600"
-                    >
-                      Status
-                    </th>
-
-                    <th
-                      scope="col"
-                      className="border-r border-zinc-600 px-6 py-0 md:py-2 lg:py-4  "
-                    >
-                      Return REQ
-                    </th>
-
-                    <th
-                      scope="col"
-                      className="border-r border-zinc-600 px-6 py-0 md:py-2 lg:py-4  "
-                    >
-                      Cancel
-                    </th>
-
-                    <th
-                      scope="col"
-                      className=" px-6 py-0 md:py-2 lg:py-4  rounded-r-2xl"
-                    >
-                      {" "}
-                      Edit{" "}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="relative">
-                  {bookingsLoading && (
-                    <ClipLoader
-                      color="#FBBF24"
-                      loading={bookingsLoading}
-                      className="absolute top-14 left-2/4"
-                      size={60}
-                      aria-label="Loading Spinner"
-                      speedMultiplier={0.8}
-                    />
-                  )}
-
-                  {updateLoading && (
-                    <ClipLoader
-                      color="#FBBF24"
-                      loading={updateLoading}
-                      className="absolute top-14 left-2/4 backdrop-blur-lg"
-                      size={60}
-                      aria-label="Loading Spinner"
-                      speedMultiplier={0.8}
-                    />
-                  )}
-
-                  {bookings?.map((booking) => (
-                    <tr key={booking._id} className="border-b ">
-                      <td className="whitespace-nowrap border-r px-6 py-4 font-medium border-zinc-500 flex items-center justify-center">
-                        <img
-                          src={booking?.car?.images[0]}
-                          className="w-[52px] h-[52px] md:w-16 md:h-16 object-contain rounded-full"
-                        />
-                      </td>
-                      <td className=" border-r font-medium text-sm  text-zinc-400 text-start md:text-center px-6 py-4 border-zinc-500">
-                        {booking.car.name}
-                      </td>
-
-                      <td className=" border-r font-medium text-sm   text-zinc-400 text-start md:text-center px-6 py-4 border-zinc-500">
-                        {booking.date}
-                      </td>
-
-                      <td className="whitespace-nowrap font-medium text-lime-500 text-sm md:text-lg border-r px-6 py-4 border-zinc-500">
-                        ${booking.car.pricePerHour}
-                      </td>
-                      <td className="whitespace-nowrap font-medium text-zinc-400 text-sm  border-r px-6 py-4 border-zinc-500">
-                        {booking.status}
-                      </td>
-
-                      {booking.status === "approved" ? (
-                        <td className="whitespace-nowrap font-medium text-zinc-400 text-sm  border-r px-6 py-4 border-zinc-500">
-                          {booking.isReturnProcess === true ? (
-                            <span className="text-amber-500">IN Progress</span>
-                          ) : (
-                            <button
-                              className={` bg-white text-violet-600 rounded font-semibold transition-all md:text-3xl `}
-                              onClick={() => {
-                                sendReturnReq(booking._id!);
-                              }}
-                            >
-                              {" "}
-                              <BsArrowUpRightSquareFill />{" "}
-                            </button>
-                          )}
-                        </td>
-                      ) : (
-                        <>
-                          {" "}
-                          <span> </span>
-                        </>
-                      )}
-
-                      {booking.status === "completed" ? (
-                        <td className="whitespace-nowrap font-medium text-zinc-400 text-sm  border-r px-6 py-4 border-zinc-500">
-                          {booking.isPaid ? (
-                            <span className="text-lg text-purple-500">
-                              Paid
-                            </span>
-                          ) : (
-                            <button
-                              className={` text-blue-500 hover:text-blue-600 flex items-center gap-1 rounded carter-one-regular transition-all md:text-xl `}
-                              onClick={() => {
-                                setUpdateBookingId(booking._id!);
-                                setOpenPayModal(true);
-                              }}
-                            >
-                              {" "}
-                              <SiPayoneer /> PAY
-                            </button>
-                          )}
-                        </td>
-                      ) : (
-                        <>
-                          {" "}
-                          <span> </span>
-                        </>
-                      )}
-
-                      {booking.status === "pending" ? (
-                        <>
-                          {" "}
-                          <td className="whitespace-nowrap font-medium  text-sm md:text-lg  px-6 py-4 border border-zinc-400">
-                            {/* delete product  */}
-                            <button
-                              className={`  text-white rounded font-semibold transition-all md:text-2xl `}
-                              onClick={() =>
-                                cancelBookingIntoDB(
-                                  booking._id!,
-                                  booking.car._id!
-                                )
-                              }
-                            >
-                              <FcCancel />
-                            </button>
-                          </td>
-                          <td className="whitespace-nowrap font-medium border-r text-sm md:text-lg  px-6 py-4 border-zinc-500">
-                            <button
-                              className={`bg-blue-700 p-1 px-2 md:py-2  text-white rounded font-semibold transition-all hover:bg-blue-800 text-[12px] md:text-base `}
-                              onClick={() => {
-                                setUpdateBookingId(booking._id!);
-                                setOpenUpdateModal(true);
-                              }}
-                            >
-                              <RiEditCircleLine />
-                            </button>
-                          </td>
-                        </>
-                      ) : (
-                        <></>
-                      )}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              {!bookings?.length && (
-                <p className="text-xl text-center mt-44 text-gray-500">
-                  {" "}
-                  No Bookings{" "}
-                </p>
-              )}
-            </div>
+      <div className="overflow-x-auto bg-white rounded-xl shadow-lg">
+        {(bookingsLoading || updateLoading || cancelLoading) && (
+          <div className="flex justify-center items-center py-12">
+            <ClipLoader
+              color="#F59E0B"
+              loading={bookingsLoading || updateLoading || cancelLoading}
+              size={60}
+              aria-label="Loading Spinner"
+              speedMultiplier={0.8}
+            />
           </div>
-        </div>
+        )}
+
+        {!bookingsLoading && !bookings.length && (
+          <div className="text-center py-12">
+            <p
+              className="text-gray-600 text-lg"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
+            >
+              No bookings found. Book your next ride with ZipCar!
+            </p>
+          </div>
+        )}
+
+        {bookings.length > 0 && (
+          <table className="min-w-full text-sm text-gray-700">
+            <thead>
+              <tr className="bg-gradient-to-r from-yellow-500 to-red-600 text-white">
+                <th
+                  className="px-6 py-4 rounded-tl-xl text-left"
+                  style={{ fontFamily: "'Poppins', sans-serif" }}
+                >
+                  Image
+                </th>
+                <th
+                  className="px-6 py-4 text-left"
+                  style={{ fontFamily: "'Poppins', sans-serif" }}
+                >
+                  Name
+                </th>
+                <th
+                  className="px-6 py-4 text-left"
+                  style={{ fontFamily: "'Poppins', sans-serif" }}
+                >
+                  Date
+                </th>
+                <th
+                  className="px-6 py-4 text-left"
+                  style={{ fontFamily: "'Poppins', sans-serif" }}
+                >
+                  Price (1H)
+                </th>
+                <th
+                  className="px-6 py-4 text-left"
+                  style={{ fontFamily: "'Poppins', sans-serif" }}
+                >
+                  Status
+                </th>
+                <th
+                  className="px-6 py-4 text-left"
+                  style={{ fontFamily: "'Poppins', sans-serif" }}
+                >
+                  Return Request
+                </th>
+                <th
+                  className="px-6 py-4 text-left"
+                  style={{ fontFamily: "'Poppins', sans-serif" }}
+                >
+                  Payment
+                </th>
+                <th
+                  className="px-6 py-4 rounded-tr-xl text-left"
+                  style={{ fontFamily: "'Poppins', sans-serif" }}
+                >
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {bookings.map((booking) => (
+                <tr
+                  key={booking._id}
+                  className="border-b border-gray-200 hover:bg-gray-50 transition-colors duration-200"
+                >
+                  <td className="px-6 py-4">
+                    <img
+                      src={
+                        booking?.car?.images[0] ||
+                        "https://via.placeholder.com/150?text=Car+Image"
+                      }
+                      alt={booking.car.name}
+                      className="w-16 h-16 object-contain rounded-full"
+                      onError={(e) => {
+                        e.currentTarget.src =
+                          "https://via.placeholder.com/150?text=Car+Image";
+                      }}
+                    />
+                  </td>
+                  <td
+                    className="px-6 py-4 text-gray-800"
+                    style={{ fontFamily: "'Poppins', sans-serif" }}
+                  >
+                    {booking.car.name}
+                  </td>
+                  <td
+                    className="px-6 py-4 text-gray-600"
+                    style={{ fontFamily: "'Poppins', sans-serif" }}
+                  >
+                    {new Date(booking.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </td>
+                  <td
+                    className="px-6 py-4 text-green-500"
+                    style={{ fontFamily: "'Poppins', sans-serif" }}
+                  >
+                    ${booking.car.pricePerHour.toFixed(2)}
+                  </td>
+                  <td
+                    className={`px-6 py-4 ${
+                      booking.status === "approved"
+                        ? "text-green-500"
+                        : booking.status === "pending"
+                        ? "text-yellow-500"
+                        : booking.status === "completed"
+                        ? "text-purple-500"
+                        : "text-red-500"
+                    }`}
+                    style={{ fontFamily: "'Poppins', sans-serif" }}
+                  >
+                    {booking.status}
+                  </td>
+                  <td className="px-6 py-4">
+                    {booking.status === "approved" && !booking.isReturnProcess ? (
+                      <button
+                        className="text-violet-600 hover:text-violet-800 transition-colors duration-200"
+                        onClick={() => sendReturnReq(booking._id!)}
+                        data-tooltip-id={`return-${booking._id}`}
+                        data-tooltip-content="Send Return Request"
+                        aria-label="Send return request"
+                      >
+                        <BsArrowUpRightSquareFill size={24} />
+                      </button>
+                    ) : booking.isReturnProcess ? (
+                      <span
+                        className="text-yellow-500"
+                        style={{ fontFamily: "'Poppins', sans-serif" }}
+                      >
+                        In Progress
+                      </span>
+                    ) : (
+                      <span className="text-gray-400">-</span>
+                    )}
+                    <Tooltip id={`return-${booking._id}`} />
+                  </td>
+                  <td className="px-6 py-4">
+                    {booking.status === "completed" && !booking.isPaid ? (
+                      <button
+                        className="flex items-center gap-1 text-blue-500 hover:text-blue-600 transition-colors duration-200"
+                        onClick={() => {
+                          setUpdateBookingId(booking._id!);
+                          setOpenPayModal(true);
+                        }}
+                        data-tooltip-id={`pay-${booking._id}`}
+                        data-tooltip-content="Make Payment"
+                        style={{ fontFamily: "'Poppins', sans-serif" }}
+                      >
+                        <SiPayoneer size={20} /> Pay
+                      </button>
+                    ) : booking.isPaid ? (
+                      <span
+                        className="text-purple-500"
+                        style={{ fontFamily: "'Poppins', sans-serif" }}
+                      >
+                        Paid
+                      </span>
+                    ) : (
+                      <span className="text-gray-400">-</span>
+                    )}
+                    <Tooltip id={`pay-${booking._id}`} />
+                  </td>
+                  <td className="px-6 py-4">
+                    {(booking.status === "pending" || booking.status === "approved") ? (
+                      <div className="flex items-center gap-4">
+                        <button
+                          className="text-red-500 hover:text-red-600 transition-colors duration-200"
+                          onClick={() =>
+                            cancelBookingIntoDB(booking._id!, booking.car._id!)
+                          }
+                          data-tooltip-id={`cancel-${booking._id}`}
+                          data-tooltip-content="Cancel Booking"
+                          aria-label="Cancel booking"
+                        >
+                          <FcCancel size={24} />
+                        </button>
+                        <button
+                          className="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                          onClick={() => {
+                            setUpdateBookingId(booking._id!);
+                            setOpenUpdateModal(true);
+                          }}
+                          data-tooltip-id={`edit-${booking._id}`}
+                          data-tooltip-content="Modify Booking"
+                          style={{ fontFamily: "'Poppins', sans-serif" }}
+                        >
+                          <RiEditCircleLine size={20} />
+                        </button>
+                        <Tooltip id={`cancel-${booking._id}`} />
+                        <Tooltip id={`edit-${booking._id}`} />
+                      </div>
+                    ) : (
+                      <span className="text-gray-400">-</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </section>
   );

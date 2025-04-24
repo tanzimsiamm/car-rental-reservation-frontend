@@ -8,18 +8,23 @@ import { HiViewGrid } from "react-icons/hi";
 
 const AdminSidebar = () => {
   return (
-    <>
+    <ul className="space-y-2">
       <li>
         <NavLink
           to="/dashboard/admin-overview"
           className={({ isActive }) =>
-            isActive
-              ? "flex items-center p-2 text-amber-400 inter-regular"
-              : "flex items-center p-2 text-gray-200 rounded-lg "
+            `flex items-center p-3 rounded-lg transition-all duration-300 ${
+              isActive
+                ? "bg-yellow-500/10 text-yellow-500"
+                : "text-gray-300 hover:bg-gray-700/50 hover:text-yellow-400"
+            }`
           }
         >
-          <HiViewGrid size={22} className="" />
-          <span className="flex-1 ms-3 text-sm lg:text-base whitespace-nowrap">
+          <HiViewGrid size={24} />
+          <span
+            className="flex-1 ms-4 text-sm lg:text-base whitespace-nowrap"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
             Overview
           </span>
         </NavLink>
@@ -28,29 +33,38 @@ const AdminSidebar = () => {
         <NavLink
           to="/dashboard/manage-cars"
           className={({ isActive }) =>
-            isActive
-              ? " flex items-center p-2 text-amber-400 inter-regular  "
-              : "flex items-center p-2 text-gray-200 rounded-lg "
+            `flex items-center p-3 rounded-lg transition-all duration-300 ${
+              isActive
+                ? "bg-yellow-500/10 text-yellow-500"
+                : "text-gray-300 hover:bg-gray-700/50 hover:text-yellow-400"
+            }`
           }
         >
-          <FaCarAlt size={22} className="" />
-          <span className="flex-1 ms-3 text-sm lg:text-base whitespace-nowrap">
+          <FaCarAlt size={24} />
+          <span
+            className="flex-1 ms-4 text-sm lg:text-base whitespace-nowrap"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
             Manage Cars
           </span>
         </NavLink>
       </li>
-
       <li>
         <NavLink
           to="/dashboard/manage-bookings"
           className={({ isActive }) =>
-            isActive
-              ? " flex items-center p-2 text-amber-400 inter-regular   "
-              : "flex items-center p-2 text-gray-200 rounded-lg  "
+            `flex items-center p-3 rounded-lg transition-all duration-300 ${
+              isActive
+                ? "bg-yellow-500/10 text-yellow-500"
+                : "text-gray-300 hover:bg-gray-700/50 hover:text-yellow-400"
+            }`
           }
         >
-          <VscTasklist size={22} className="" />
-          <span className="flex-1 ms-3 text-sm lg:text-base whitespace-nowrap">
+          <VscTasklist size={24} />
+          <span
+            className="flex-1 ms-4 text-sm lg:text-base whitespace-nowrap"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
             Manage Bookings
           </span>
         </NavLink>
@@ -59,13 +73,18 @@ const AdminSidebar = () => {
         <NavLink
           to="/dashboard/manage-return-cars"
           className={({ isActive }) =>
-            isActive
-              ? " flex items-center p-2 text-amber-400 inter-regular   "
-              : "flex items-center p-2 text-gray-200 rounded-lg  "
+            `flex items-center p-3 rounded-lg transition-all duration-300 ${
+              isActive
+                ? "bg-yellow-500/10 text-yellow-500"
+                : "text-gray-300 hover:bg-gray-700/50 hover:text-yellow-400"
+            }`
           }
         >
-          <GiReturnArrow size={22} className="" />
-          <span className="flex-1 ms-3 text-sm lg:text-base whitespace-nowrap">
+          <GiReturnArrow size={24} />
+          <span
+            className="flex-1 ms-4 text-sm lg:text-base whitespace-nowrap"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
             Manage Return Cars
           </span>
         </NavLink>
@@ -74,13 +93,18 @@ const AdminSidebar = () => {
         <NavLink
           to="/dashboard/manage-users"
           className={({ isActive }) =>
-            isActive
-              ? " flex items-center p-2 text-amber-400 inter-regular   "
-              : "flex items-center p-2 text-gray-200 rounded-lg  "
+            `flex items-center p-3 rounded-lg transition-all duration-300 ${
+              isActive
+                ? "bg-yellow-500/10 text-yellow-500"
+                : "text-gray-300 hover:bg-gray-700/50 hover:text-yellow-400"
+            }`
           }
         >
-          <FiUsers size={22} className="" />
-          <span className="flex-1 ms-3 text-sm lg:text-base whitespace-nowrap">
+          <FiUsers size={24} />
+          <span
+            className="flex-1 ms-4 text-sm lg:text-base whitespace-nowrap"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
             Manage Users
           </span>
         </NavLink>
@@ -89,19 +113,23 @@ const AdminSidebar = () => {
         <NavLink
           to="/"
           className={({ isActive }) =>
-            isActive
-              ? " flex items-center p-2 text-amber-400 inter-regular  "
-              : "flex items-center p-2 text-gray-200 rounded-lg "
+            `flex items-center p-3 rounded-lg transition-all duration-300 ${
+              isActive
+                ? "bg-yellow-500/10 text-yellow-500"
+                : "text-gray-300 hover:bg-gray-700/50 hover:text-yellow-400"
+            }`
           }
         >
-          <FaHouse size={22} className="" />
-          <span className="flex-1 ms-3 text-sm lg:text-base whitespace-nowrap">
-            {" "}
-            Home{" "}
+          <FaHouse size={24} />
+          <span
+            className="flex-1 ms-4 text-sm lg:text-base whitespace-nowrap"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            Home
           </span>
         </NavLink>
       </li>
-    </>
+    </ul>
   );
 };
 

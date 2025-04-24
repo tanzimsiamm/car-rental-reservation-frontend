@@ -21,15 +21,13 @@ export default function CheckoutForm({
 
   const currentUser = useAppSelector((state) => state.auth.user);
   const [loading, setLoading] = useState(false);
+  const [clientSecret, setClientSecret] = useState("");
 
-  const [clientSecret, setClientSecret] = useState({});
   const stripe = useStripe();
   const elements = useElements();
 
   useEffect(() => {
     if (totalCost) {
-      // http://localhost:3000
-      // https://assignment-three-seven.vercel.app/api/payments/create-payment-intent
       fetch("http://localhost:3000", {
         method: "POST",
         headers: {
@@ -37,8 +35,9 @@ export default function CheckoutForm({
         },
         body: JSON.stringify({ totalCost, currency: "usd" }),
       })
-        .then((data) => data.json())
-        .then((res) => setClientSecret(res.data));
+        .then((res) => res.json())
+        .then((data) => setClientSecret(data.data))
+        .catch(() => toast.error("Failed to initialize payment"));
     }
   }, [totalCost]);
 
@@ -47,14 +46,14 @@ export default function CheckoutForm({
     setLoading(true);
 
     if (!stripe || !elements) {
+      toast.error("Payment system not initialized");
       setLoading(false);
       return;
     }
 
-    // get input field value from CardElement , this is internal mechanism
     const card = elements.getElement(CardElement);
-
-    if (card === null) {
+    if (!card) {
+      toast.error("Card details not provided");
       setLoading(false);
       return;
     }
@@ -65,30 +64,28 @@ export default function CheckoutForm({
     });
 
     if (error) {
+      toast.error(error.message || "Invalid card details");
       setLoading(false);
-      console.log(error);
-    } else {
-      console.log("payment method", paymentMethod);
+      return;
     }
 
-    const { paymentIntent, error: confirmError } =
-      await stripe.confirmCardPayment(clientSecret as string, {
-        payment_method: {
-          card: card,
-          billing_details: {
-            name: currentUser?.name,
-            email: currentUser?.email,
-          },
+    const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card,
+        billing_details: {
+          name: currentUser?.name || "Guest",
+          email: currentUser?.email || "",
         },
-      });
+      },
+    });
 
     if (confirmError) {
-      console.log(confirmError);
+      toast.error(confirmError.message || "Payment confirmation failed");
       setLoading(false);
+      return;
     }
 
     if (paymentIntent?.status === "succeeded") {
-      // now save the payment in database
       const payment = {
         email: currentUser?.email,
         cost: Number(totalCost),
@@ -104,64 +101,77 @@ export default function CheckoutForm({
           bookingId: _id!,
           payload: { isPaid: true },
         }).unwrap();
-
         toast.success("Payment Successful");
-        setLoading(false);
         setOpen(false);
       } else {
-        toast.error("something wrong");
+        toast.error("Failed to save payment");
       }
     }
+    setLoading(false);
   };
 
   return (
-    <section>
+    <section className="max-w-md mx-auto p-6 bg-white rounded-2xl shadow-lg">
       <form onSubmit={handleSubmit}>
-        <h2 className="uppercase text-gray-400 md:text-[17px] font-semibold text-center my-6 ">
-          {" "}
-          Total : {totalCost?.toFixed(1)} Taka{" "}
+        <h2
+          className="text-xl font-semibold text-center mb-6"
+          style={{
+            fontFamily: "'Poppins', sans-serif",
+            background: "linear-gradient(90deg, #F59E0B, #D97706)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          Total: ${totalCost?.toFixed(2)}
         </h2>
-        <CardElement
-          options={{
-            style: {
-              base: {
-                fontSize: "16px",
-                color: "#424770",
-                "::placeholder": {
-                  color: "#aab7c4",
+        <div className="mb-6">
+          <CardElement
+            options={{
+              style: {
+                base: {
+                  fontSize: "16px",
+                  color: "#1F2937",
+                  fontFamily: "'Poppins', sans-serif",
+                  "::placeholder": {
+                    color: "#6B7280",
+                  },
+                },
+                invalid: {
+                  color: "#EF4444",
                 },
               },
-              invalid: {
-                color: "#9e2146",
-              },
-            },
-          }}
-        />
-        <button
-          className=" bg-green-600 my-6 py-2 text-sm md:text-base font-semibold uppercase px-12 rounded-md text-white/80"
-          disabled={!stripe || !elements}
-        >
-          {" "}
-          {loading ? (
-            <ClipLoader
-              color="#ffffff"
-              //  loading={dataLoading || updateLoading}
-              size={16}
-              aria-label="Loading Spinner"
-              speedMultiplier={0.8}
-            />
-          ) : (
-            "Pay Now"
-          )}
-        </button>
-
-        <button
-          onClick={() => setOpen(!open)}
-          className="px-8 ml-2 text-sm lg:text-base mr-3 py-2 md:py-2 font-semibold text-white rounded transition bg-red-600 hover:bg-red-700 "
-        >
-          {" "}
-          Close{" "}
-        </button>
+            }}
+            className="border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+          />
+        </div>
+        <div className="flex gap-4">
+          <button
+            type="submit"
+            className="w-full bg-green-600 text-white py-2 rounded-lg font-semibold hover:bg-green-700 focus:ring-2 focus:ring-yellow-500 transition-all duration-300 flex justify-center items-center disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={!stripe || !elements || loading}
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            {loading ? (
+              <ClipLoader
+                color="#ffffff"
+                loading={loading}
+                size={20}
+                aria-label="Loading Spinner"
+                speedMultiplier={0.8}
+              />
+            ) : (
+              "Pay Now"
+            )}
+          </button>
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            className="w-full bg-gray-600 text-white py-2 rounded-lg font-semibold hover:bg-gray-700 focus:ring-2 focus:ring-yellow-500 transition-all duration-300"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            Close
+          </button>
+        </div>
       </form>
     </section>
   );

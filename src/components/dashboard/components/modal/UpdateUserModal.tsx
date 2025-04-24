@@ -1,120 +1,200 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-import {useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { ClipLoader } from "react-spinners";
 import { toast } from "sonner";
 import { useEffect } from "react";
 import { useGetSingleUserQuery, useUpdateUserMutation } from "../../../../redux/features/user/userApi";
 import { TUser } from "../../../../redux/features/authentication/authSlice";
 
-
 type TModalProps = {
-    userEmail : string,
-  open : boolean,
-  setOpen : React.Dispatch<React.SetStateAction<boolean>>
-}
+  userEmail: string;
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
+export default function UpdateUserModal({ open, setOpen, userEmail }: TModalProps) {
+  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const [updateUser, { isLoading: updateLoading }] = useUpdateUserMutation();
+  const { data, isLoading: dataLoading, isSuccess } = useGetSingleUserQuery(userEmail);
+  const user: TUser = data?.data;
 
-export default function UpdateUserModal({ open, setOpen, userEmail} : TModalProps) {
-  const { register, handleSubmit, reset } = useForm();
-  const [ updateUser, { isLoading: updateLoading }] = useUpdateUserMutation();
-  const { data, isLoading: dataLoading , isSuccess} = useGetSingleUserQuery(userEmail);
-  const user : TUser = data?.data;
-
-
-
-    // Set the default values dynamically
-    useEffect(() => {
-      if(isSuccess){
-        reset({
-          name : user.name,
-        email : user.email,
-        role : user.role,
-        image : user.image,
-        });
-      }
-    }, [reset, user, isSuccess]);
-
+  useEffect(() => {
+    if (isSuccess && user) {
+      reset({
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        image: user.image,
+      });
+    }
+  }, [reset, user, isSuccess]);
 
   const onSubmit = async (data: any) => {
-    
-    const userData : TUser = {
-      name : data.name,
-     email : data.email,
-     role : data.role,
-     image : data.image,
+    const userData: Partial<TUser> = {
+      name: data.name,
+      email: data.email,
+      role: data.role,
+      image: data.image,
+    };
+
+    try {
+      const response = await updateUser({
+        userId: user._id!,
+        payload: userData,
+      }).unwrap();
+
+      if (response?.success) {
+        setOpen(false);
+        toast.success("User updated successfully");
+      }
+    } catch (error) {
+      toast.error("Failed to update user");
+      console.error(error);
     }
+  };
 
-  try {
-    const response =  await updateUser({
-      userId : user._id!,
-      payload : userData,
-    }).unwrap();
-
-  if(response?.success){
-    // close the modal 
-    setOpen(false)
-    // show a toast 
-    toast.success('User updated successfully')
-  }
-  }catch(error){
-    toast.error('Something went wrong')
-    console.log(error)
-  }
- 
-  }
   return (
-    <section className="w-screen h-screen fixed top-0 left-0 right-0 bottom-0 z-50  bg-black/30 backdrop-blur-sm flex justify-center items-center overflow-y-auto">  
-       
-       <form className="w-[400px] md:w-[600px] p-7 bg-white rounded-md relative" onSubmit={handleSubmit(onSubmit)}>
+    <section className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm overflow-y-auto">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full max-w-md md:max-w-lg bg-white rounded-2xl p-8 shadow-lg relative"
+      >
+        {(dataLoading || updateLoading) && (
+          <div className="absolute inset-0 bg-white/80 rounded-2xl flex justify-center items-center">
+            <ClipLoader
+              color="#F59E0B"
+              loading={dataLoading || updateLoading}
+              size={60}
+              aria-label="Loading Spinner"
+              speedMultiplier={0.8}
+            />
+          </div>
+        )}
 
-        {/* loading white layer  */}
-      {dataLoading || updateLoading? <div className="w-full h-full absolute top-0 left-0 right-0 bottom-0 bg-white/80 rounded-md flex justify-center items-center"> 
-        <ClipLoader
-           color='#000002'
-          //  loading={dataLoading || updateLoading}
-           size={60}
-           aria-label="Loading Spinner"
-           speedMultiplier={0.8} />
-      </div> : ""}
+        <h2
+          className="text-2xl font-bold mb-6 text-center"
+          style={{
+            fontFamily: "'Poppins', sans-serif",
+            background: "linear-gradient(90deg, #F59E0B, #D97706)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          Update User
+        </h2>
 
-        <div className="">
-            <img src={user?.image} className="w-44 h-44 object-cover rounded-xl mx-auto" />
+        {user && (
+          <div className="flex justify-center mb-6">
+            <img
+              src={user.image || "https://via.placeholder.com/150?text=User+Image"}
+              alt={user.name}
+              className="w-32 h-32 object-cover rounded-xl"
+              onError={(e) => {
+                e.currentTarget.src = "https://via.placeholder.com/150?text=User+Image";
+              }}
+            />
+          </div>
+        )}
+
+        <div className="mb-4">
+          <label
+            className="block text-sm font-medium text-gray-700 mb-1"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            Name
+          </label>
+          <input
+            type="text"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none transition-all duration-300"
+            {...register("name", { required: "Name is required" })}
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          />
+          {errors.name && (
+            <span className="text-red-500 text-sm">{errors.name.message as string}</span>
+          )}
         </div>
 
-
-        <div className="flex flex-col justify-start items-start mb-3">
-        <label className="font-semibold">Name</label>
-        <input type="text" className="outline-none border-b-2 border-gray-700 focus:border-blue-600 w-full py-1 rounded-sm"  {...register("name")} />
+        <div className="mb-4">
+          <label
+            className="block text-sm font-medium text-gray-700 mb-1"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            Email
+          </label>
+          <input
+            type="email"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none transition-all duration-300"
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "Invalid email address",
+              },
+            })}
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          />
+          {errors.email && (
+            <span className="text-red-500 text-sm">{errors.email.message as string}</span>
+          )}
         </div>
 
-        <div className="flex flex-col justify-start items-start mb-3">
-        <label className="font-semibold">Email</label>
-        <input type="text" className="outline-none border-b-2 border-gray-700 focus:border-blue-600 w-full py-1 rounded-sm"  {...register("email")} />
+        <div className="mb-4">
+          <label
+            className="block text-sm font-medium text-gray-700 mb-1"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            Role
+          </label>
+          <select
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none transition-all duration-300"
+            {...register("role", { required: "Role is required" })}
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+          </select>
+          {errors.role && (
+            <span className="text-red-500 text-sm">{errors.role.message as string}</span>
+          )}
         </div>
 
-        <div className="flex flex-col justify-start items-start mb-3">
-        <label className="font-semibold">Role</label>
-         <select className="w-full outline p-2 mt-3 outline-black/20 rounded-sm outline-1 text-xs md:text-sm " {...register("role")} >
-              <option value='user'>User</option>
-              <option value='admin'>Admin</option>
-              
-        </select>
-
+        <div className="mb-6">
+          <label
+            className="block text-sm font-medium text-gray-700 mb-1"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            Image URL
+          </label>
+          <input
+            type="text"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none transition-all duration-300"
+            {...register("image", { required: "Image URL is required" })}
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          />
+          {errors.image && (
+            <span className="text-red-500 text-sm">{errors.image.message as string}</span>
+          )}
         </div>
 
-
-        <div className="flex flex-col justify-start items-start mb-3">
-        <label className="font-semibold">Image URL</label>
-        <input type="text" className="outline-none border-b-2 border-gray-700 focus:border-blue-600 w-full py-1 rounded-sm" {...register("image")} />
+        <div className="flex gap-4">
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 focus:ring-2 focus:ring-yellow-500 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+            disabled={dataLoading || updateLoading}
+          >
+            Modify
+          </button>
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            className="w-full bg-gray-600 text-white py-2 rounded-lg font-semibold hover:bg-gray-700 focus:ring-2 focus:ring-yellow-500 transition-all duration-300"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            Close
+          </button>
         </div>
-
-
-<button type="submit" className="px-8 text-sm lg:text-base mt-6 mr-3 py-2 md:py-2 font-semibold text-white rounded transition bg-blue-600 hover:bg-blue-700 ">Modify</button>
-
-<button onClick={() => setOpen(!open)} className="px-8 text-sm lg:text-base mr-3 py-2 md:py-2 font-semibold text-white rounded transition bg-red-600 hover:bg-red-700 "> Close </button>
-</form>
-       
-       </section>
-  )
+      </form>
+    </section>
+  );
 }

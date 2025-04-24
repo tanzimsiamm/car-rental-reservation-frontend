@@ -1,10 +1,4 @@
-
-type TStatistics = {
-    totalBookings : number,
-    availableCars  : number,
-    totalRevenue : number;
-}
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -17,106 +11,164 @@ import {
 } from "chart.js";
 import { useGetStatisticsQuery } from "../../../redux/features/booking/bookingApi";
 
+type TStatistics = {
+  totalBookings: number;
+  availableCars: number;
+  totalRevenue: number;
+};
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const AdminOverview = () => {
-    const { data: statisticsData} = useGetStatisticsQuery(undefined);
+  const { data: statisticsData, isLoading } = useGetStatisticsQuery(undefined);
+  const statistics: TStatistics = statisticsData?.data || { totalBookings: 0, availableCars: 0, totalRevenue: 0 };
 
-    const statistics : TStatistics = statisticsData?.data || []
+  const data = {
+    labels: ["Total Bookings", "Available Cars", "Total Revenue"],
+    datasets: [
+      {
+        label: "Statistics",
+        data: [statistics.totalBookings, statistics.availableCars, statistics.totalRevenue],
+        backgroundColor: ["#F59E0B", "#10B981", "#D97706"],
+        borderColor: ["#F59E0B", "#10B981", "#D97706"],
+        borderWidth: 1,
+      },
+    ],
+  };
 
-    const data = {
-        labels: ["Total Bookings", "Available Cars", "Total Revenue"],
-        datasets: [
-          {
-            label: "Statistics",
-            data: [
-              statistics.totalBookings,
-              statistics.availableCars,
-              statistics.totalRevenue,
-            ],
-            backgroundColor: ["#3b82f6", "#10b981", "#f59e0b"],
-            borderColor: ["#3b82f6", "#10b981", "#f59e0b"],
-            borderWidth: 1,
-          },
-        ],
-      };
-
-      // Chart options including custom table border color
   const options = {
     responsive: true,
-    scales: {
-      x: {
-        grid: {
-          color: "#565d6e", // Set your desired x-axis grid color
-          borderColor: "#D1D5DB", // Set your desired x-axis border color
-        },
-        ticks: {
-          color: "#D1D5DB", // Set x-axis labels color
+    plugins: {
+      legend: {
+        labels: {
+          color: "#6B7280",
+          font: { family: "'Poppins', sans-serif" },
         },
       },
+      tooltip: {
+        titleFont: { family: "'Poppins', sans-serif" },
+        bodyFont: { family: "'Poppins', sans-serif" },
+      },
+    },
+    scales: {
+      x: {
+        grid: { color: "#E5E7EB" },
+        ticks: { color: "#6B7280", font: { family: "'Poppins', sans-serif" } },
+      },
       y: {
-        grid: {
-          color: "#565d6e", // Set your desired y-axis grid color
-          borderColor: "#D1D5DB", // Set your desired y-axis border color
-        },
-        ticks: {
-          color: "#D1D5DB", // Set y-axis labels color
-        },
+        grid: { color: "#E5E7EB" },
+        ticks: { color: "#6B7280", font: { family: "'Poppins', sans-serif" } },
       },
     },
   };
 
-
-
   return (
-    <div className="container mx-auto p-4 sm:p-8">
-    <h2 className="text-3xl lg:text-4xl carter-one-regular text-center mb-8 text-gray-300 ">Statistics</h2>
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div className="card shadow-lg p-6 bg-[#171A21] text-center">
-        <img src={'/PngItem_273860.png'} alt="Car" className="mx-auto mb-4 w-16 h-16 md:w-24 md:h-24 object-contain" />
-        <div className="text-4xl md:text-6xl font-bold text-red-600 mb-2 md:mb-4">
-          {statistics.totalBookings}
+    <div className="max-w-[1500px] mx-auto px-4 py-12">
+      <h2
+        className="text-3xl md:text-4xl font-bold text-center mb-12"
+        style={{
+          fontFamily: "'Poppins', sans-serif",
+          background: "linear-gradient(90deg, #F59E0B, #D97706)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+        }}
+      >
+        Admin Statistics
+      </h2>
+
+      {isLoading ? (
+        <div className="flex justify-center items-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-yellow-500"></div>
         </div>
-        <div className="text-lg md:text-xl text-gray-400 font-semibold">Total Bookings</div>
-      </div>
-      <div className="card shadow-lg p-6 bg-[#171A21] text-center">
-        <img
-          src="/pngegg (18).png" // Example available cars icon
-          alt="Available Cars"
-          className="mx-auto mb-4 w-28 h-20 md:w-36 md:h-28 object-contain"
-        />
-        <div className="text-4xl md:text-6xl font-bold text-lime-500 mb-2 md:mb-4">
-          {statistics.availableCars}
-        </div>
-        <div className="text-lg md:text-xl text-gray-400 font-semibold">Available Cars</div>
-      </div>
-      <div className="card shadow-lg p-6 bg-[#171A21] text-center">
-        <img
-          src="/profit.png" // Example revenue icon
-          alt="Revenue"
-          className="mx-auto mb-4 w-16 h-16 md:w-24 md:h-24"
-        />
-        <div className="text-4xl text-amber-500 md:text-6xl font-bold  mb-2 md:mb-4">
-          ${statistics.totalRevenue?.toFixed(1)}
-        </div>
-        <div className="text-lg md:text-xl text-gray-400 font-semibold">Total Revenue</div>
-      </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white rounded-xl shadow-lg p-6 text-center transition-transform duration-300 hover:scale-105">
+              <img
+                src="/PngItem_273860.png"
+                alt="Bookings"
+                className="mx-auto mb-4 w-16 h-16 object-contain"
+                onError={(e) => {
+                  e.currentTarget.src = "https://via.placeholder.com/150?text=Icon";
+                }}
+              />
+              <div
+                className="text-4xl md:text-5xl font-bold text-red-600 mb-2"
+                style={{ fontFamily: "'Poppins', sans-serif" }}
+              >
+                {statistics.totalBookings}
+              </div>
+              <div
+                className="text-lg text-gray-600 font-semibold"
+                style={{ fontFamily: "'Poppins', sans-serif" }}
+              >
+                Total Bookings
+              </div>
+            </div>
+            <div className="bg-white rounded-xl shadow-lg p-6 text-center transition-transform duration-300 hover:scale-105">
+              <img
+                src="/pngegg (18).png"
+                alt="Cars"
+                className="mx-auto mb-4 w-20 h-16 object-contain"
+                onError={(e) => {
+                  e.currentTarget.src = "https://via.placeholder.com/150?text=Icon";
+                }}
+              />
+              <div
+                className="text-4xl md:text-5xl font-bold text-green-500 mb-2"
+                style={{ fontFamily: "'Poppins', sans-serif" }}
+              >
+                {statistics.availableCars}
+              </div>
+              <div
+                className="text-lg text-gray-600 font-semibold"
+                style={{ fontFamily: "'Poppins', sans-serif" }}
+              >
+                Available Cars
+              </div>
+            </div>
+            <div className="bg-white rounded-xl shadow-lg p-6 text-center transition-transform duration-300 hover:scale-105">
+              <img
+                src="/profit.png"
+                alt="Revenue"
+                className="mx-auto mb-4 w-16 h-16 object-contain"
+                onError={(e) => {
+                  e.currentTarget.src = "https://via.placeholder.com/150?text=Icon";
+                }}
+              />
+              <div
+                className="text-4xl md:text-5xl font-bold text-yellow-500 mb-2"
+                style={{ fontFamily: "'Poppins', sans-serif" }}
+              >
+                ${statistics.totalRevenue.toFixed(2)}
+              </div>
+              <div
+                className="text-lg text-gray-600 font-semibold"
+                style={{ fontFamily: "'Poppins', sans-serif" }}
+              >
+                Total Revenue
+              </div>
+            </div>
+          </div>
+          <div className="mt-12">
+            <h2
+              className="text-3xl md:text-4xl font-bold text-center mb-8"
+              style={{
+                fontFamily: "'Poppins', sans-serif",
+                background: "linear-gradient(90deg, #F59E0B, #D97706)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              Statistics Overview
+            </h2>
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <Bar data={data} options={options} />
+            </div>
+          </div>
+        </>
+      )}
     </div>
-    <div className="mt-8">
-    <h2 className="text-3xl lg:text-4xl carter-one-regular text-center my-10 text-gray-300 ">Statistic Graph</h2>
-      <div className="card shadow-lg p-4 md:p-6 bg-[#171A21] rounded-xl">
-        <Bar data={data} options={options} />
-      </div>
-    </div>
-  </div>
   );
 };
 

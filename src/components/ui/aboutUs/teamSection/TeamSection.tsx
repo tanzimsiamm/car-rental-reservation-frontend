@@ -1,66 +1,82 @@
-import { useState } from "react";
 import TeamCard from "./TeamCard";
 
 const teams = [
   {
-    userName: "Imtiaz Sarkar Shimul",
-    position: "Senior Advisor",
-    image: "/Screenshot (712).png",
+    userName: "Emma Thompson",
+    position: "Chief Operating Officer",
+    image: "https://randomuser.me/api/portraits/women/44.jpg",
     id: 1,
   },
   {
-    userName: "Khan Mohammad Iqra",
-    position: "Site Manager",
-    image: "/52e58987bcc42c63c37abd7a5ab35575.jpg",
+    userName: "Liam Carter",
+    position: "Fleet Manager",
+    image: "https://randomuser.me/api/portraits/men/67.jpg",
     id: 2,
   },
   {
-    userName: "Shamim Ahmed",
-    position: "Senior Designer",
-    image: "/7152f0516abb4f83bc37d1b03e5dd237.jpg",
+    userName: "Sofia Mendes",
+    position: "Lead Designer",
+    image: "https://randomuser.me/api/portraits/women/19.jpg",
     id: 3,
   },
   {
-    userName: "Sogir Sikder",
+    userName: "Aarav Patel",
     position: "Senior Advisor",
-    image: "/Screenshot (711).png",
+    image: "https://randomuser.me/api/portraits/men/32.jpg",
     id: 4,
   },
   {
-    userName: "Tanim Pramanik",
-    position: "Site Manager",
-    image: "/Screenshot (710).png",
+    userName: "Olivia Brooks",
+    position: "Customer Experience Manager",
+    image: "https://randomuser.me/api/portraits/women/65.jpg",
     id: 5,
   },
   {
-    userName: "Maksudur Rahman",
-    position: "3D Visual Designer",
-    image: "/a7a12ce815dca51a03017beda3103ba1.jpg",
+    userName: "Noah Kim",
+    position: "Innovation Specialist",
+    image: "https://randomuser.me/api/portraits/men/81.jpg",
     id: 6,
   },
 ];
 
 const TeamSection = () => {
-  const [teamData] = useState(teams);
-
   return (
-    <div className="my-28 xl:my-44">
-      <h2 className="text-3xl lg:text-4xl carter-one-regular text-center text-gray-300 mb-12">
-        Team Members
-      </h2>
+    <section className="bg-gray-100 py-12 lg:py-20">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2
+            className="text-3xl md:text-4xl lg:text-5xl font-bold"
+            style={{
+              fontFamily: "'Poppins', sans-serif",
+              background: "linear-gradient(90deg, #F59E0B, #D97706)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              letterSpacing: "0.05em",
+              textShadow: "1.5px 1.5px 3px rgba(0, 0, 0, 0.3)",
+            }}
+          >
+            Meet Our Team
+          </h2>
+          <p
+            className="mt-4 text-gray-500 text-base md:text-lg max-w-2xl mx-auto"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            Our dedicated professionals bring expertise and passion to ensure your journey is exceptional.
+          </p>
+        </div>
 
-      {/* grid container  */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-9">
-        {teamData?.map((person) => (
-          <TeamCard
-            key={person.id}
-            name={person.userName}
-            position={person.position}
-            image={person.image}
-          />
-        ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {teams.map((person) => (
+            <TeamCard
+              key={person.id}
+              name={person.userName}
+              position={person.position}
+              image={person.image}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

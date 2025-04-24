@@ -1,22 +1,35 @@
-
-const TeamCard = ({ name, position, image}: 
-    { name: string; position : string; image: string}) => {
-
+const TeamCard = ({ name, position, image }: { name: string; position: string; image: string }) => {
     return (
-        <div>
-
-            <div className="h-[280px] md:h-[160px] lg:h-[240px] xl:h-[330px]">
-                <img src={image} style={{borderRadius: '65px'}} className="w-full h-full object-cover opacity-90 px-7 py-6 md:px-4 md:py-3 lg:px-6  lg:py-7 xl:px-12 xl:py-10" />
-             </div>
-
-            <div className="border-l-2 border-gray-300 px-6 md:px-4 lg:px-7 xl:px-12 py-2 xl:py-5 pb-1 ml-9  border-t-2 rounded-3xl">
-
-            <h2 className={`text-xl md:text-sm lg:text-lg xl:text-[22px]  lg:mb-1 xl:mb-2 text-zinc-400 `}> {name} </h2>
-             <h4 className={`text-xs lg:text-sm xl:text-base text-amber-500`}> {position} </h4>
-            </div>
-  
+      <div className="group bg-white/90 backdrop-blur-sm rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
+        <div className="relative h-[280px] md:h-[200px] lg:h-[260px] xl:h-[320px]">
+          <img
+            src={image}
+            alt={name}
+            className="w-full h-full object-cover rounded-t-2xl group-hover:scale-105 transition-transform duration-300"
+            style={{ filter: "brightness(0.95)" }}
+            onError={(e) => {
+              e.currentTarget.src = "https://via.placeholder.com/300x300?text=Image+Not+Found";
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-t-2xl"></div>
         </div>
+  
+        <div className="p-6 text-center">
+          <h2
+            className="text-xl md:text-lg lg:text-xl xl:text-2xl font-semibold text-zinc-800 mb-1"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            {name}
+          </h2>
+          <h4
+            className="text-sm lg:text-base text-yellow-500"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            {position}
+          </h4>
+        </div>
+      </div>
     );
-};
-
-export default TeamCard;
+  };
+  
+  export default TeamCard;
