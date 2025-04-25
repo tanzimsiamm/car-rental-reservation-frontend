@@ -26,7 +26,7 @@ const AboutUs = () => {
           </h2>
           <div className="max-w-3xl mx-auto text-gray-500 text-base md:text-lg space-y-4">
             <p style={{ fontFamily: "'Poppins', sans-serif" }}>
-              Founded in 2005, ZipCar began as a modest local rental service and has since evolved into a trusted leader in the car rental industry. Our fleet now boasts an extensive range of vehicles, from sleek compacts to luxurious SUVs, catering to every traveler's needs.
+              Founded in 2005, DriveSpark began as a modest local rental service and has since evolved into a trusted leader in the car rental industry. Our fleet now boasts an extensive range of vehicles, from sleek compacts to luxurious SUVs, catering to every traveler's needs.
             </p>
             <p style={{ fontFamily: "'Poppins', sans-serif" }}>
               Our dedication to exceptional customer service and a reliable fleet has built a loyal community and earned us industry recognition. We continuously innovate, integrating cutting-edge technology to ensure a seamless and delightful rental experience.
@@ -74,7 +74,7 @@ const AboutUs = () => {
                 className="text-gray-500 text-base md:text-lg"
                 style={{ fontFamily: "'Poppins', sans-serif" }}
               >
-                At ZipCar, our mission is to empower every journey with freedom, reliability, and joy. We value integrity, innovation, and customer satisfaction, ensuring that every interaction reflects our commitment to excellence. Our team is driven by a passion for sustainable mobility and creating unforgettable experiences on the road.
+                At DriveSpark, our mission is to empower every journey with freedom, reliability, and joy. We value integrity, innovation, and customer satisfaction, ensuring that every interaction reflects our commitment to excellence. Our team is driven by a passion for sustainable mobility and creating unforgettable experiences on the road.
               </p>
             </div>
           </div>
@@ -95,7 +95,7 @@ const AboutUs = () => {
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d243647.3420383605!2d-74.247896728125!3d40.69714939585013!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sus!4v1720767292885!5m2!1sen!2sus"
                   className="w-full h-full"
                   loading="lazy"
-                  title="ZipCar Location"
+                  title="DriveSpark Location"
                 ></iframe>
               </div>
             </div>
@@ -114,7 +114,7 @@ const AboutUs = () => {
                     className="text-gray-500 text-base"
                     style={{ fontFamily: "'Poppins', sans-serif" }}
                   >
-                    ZipCar LTD, 1234 Broadway, Suite 567, New York, NY 10001, USA
+                    DriveSpark LTD, 1234 Broadway, Suite 567, New York, NY 10001, USA
                   </p>
                 </div>
                 <div className="flex items-center gap-4">
@@ -123,7 +123,7 @@ const AboutUs = () => {
                     className="text-gray-500 text-base"
                     style={{ fontFamily: "'Poppins', sans-serif" }}
                   >
-                    Email: support@zipcar.com
+                    Email: support@DriveSpark.com
                   </p>
                 </div>
                 <div className="flex items-center gap-4">

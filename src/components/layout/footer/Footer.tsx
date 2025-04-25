@@ -16,11 +16,11 @@ export default function Footer() {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              ZipCar
+              DriveSpark
             </h2>
           </div>
           <p className="text-gray-500 text-sm lg:text-base">
-            ZipCar New York (Main Branch)<br />
+            DriveSpark New York (Main Branch)<br />
             1234 Broadway, Suite 567,<br />
             New York, NY 10001, USA
           </p>
@@ -76,7 +76,7 @@ export default function Footer() {
           </h2>
           <div className="flex flex-col gap-3 text-sm">
             <span className="text-yellow-500 cursor-pointer hover:text-red-600 transition-colors">+1-800-555-1234</span>
-            <span className="text-yellow-500 cursor-pointer hover:text-red-600 transition-colors">support@zipcar.com</span>
+            <span className="text-yellow-500 cursor-pointer hover:text-red-600 transition-colors">support@DriveSpark.com</span>
             <p className="text-gray-500 font-medium">Dedicated Customer Support</p>
             <p className="text-gray-500 text-xs">
               Mon-Fri: 8AM-8PM<br />
@@ -117,7 +117,7 @@ export default function Footer() {
 
       <div className="text-center py-8 border-t border-gray-200">
         <p className="text-gray-500 text-sm" style={{ fontFamily: "'Poppins', sans-serif" }}>
-          Copyright © 2025 ZipCar Ltd. All rights reserved.
+          Copyright © 2025 DriveSpark Ltd. All rights reserved.
         </p>
       </div>
     </div>

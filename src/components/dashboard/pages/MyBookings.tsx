@@ -72,7 +72,7 @@ export default function MyBooking() {
           className="mt-3 text-gray-600 md:text-lg"
           style={{ fontFamily: "'Poppins', sans-serif" }}
         >
-          Manage your ZipCar bookings with ease.
+          Manage your DriveSpark bookings with ease.
         </p>
       </div>
 
@@ -111,7 +111,7 @@ export default function MyBooking() {
               className="text-gray-600 text-lg"
               style={{ fontFamily: "'Poppins', sans-serif" }}
             >
-              No bookings found. Book your next ride with ZipCar!
+              No bookings found. Book your next ride with DriveSpark!
             </p>
           </div>
         )}

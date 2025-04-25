@@ -23,7 +23,7 @@ const BookingHistory = () => {
           className="mt-3 text-gray-600 md:text-lg"
           style={{ fontFamily: "'Poppins', sans-serif" }}
         >
-          Review your past and upcoming bookings with ZipCar.
+          Review your past and upcoming bookings with DriveSpark.
         </p>
       </div>
 
@@ -46,7 +46,7 @@ const BookingHistory = () => {
             className="text-gray-600 text-lg"
             style={{ fontFamily: "'Poppins', sans-serif" }}
           >
-            No bookings found. Start your journey with ZipCar today!
+            No bookings found. Start your journey with DriveSpark today!
           </p>
         </div>
       ) : (

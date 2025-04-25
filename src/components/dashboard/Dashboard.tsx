@@ -42,7 +42,7 @@ const Dashboard = () => {
                 letterSpacing: "0.05em",
               }}
             >
-              ZipCar Control Panel
+              DriveSpark Control Panel
             </h2>
           </div>
         </div>
@@ -88,7 +88,7 @@ const Dashboard = () => {
                 className="text-xs text-gray-500 text-center"
                 style={{ fontFamily: "'Poppins', sans-serif" }}
               >
-                ZipCar © {new Date().getFullYear()}
+                DriveSpark © {new Date().getFullYear()}
               </p>
             </div>
           </div>

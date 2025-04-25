@@ -12,12 +12,12 @@ export default function Cars() {
   const cars: TCar[] = data?.data || [];
 
   return (
-    <section className="bg-gray-100">
+    <section className="bg-gray-100 relative z-0">
       <SearchBanner setFilterQuery={setFilterQuery} />
       <Container>
         <section className="my-6 md:my-8 lg:my-12">
           {isFetching && (
-            <div className="fixed inset-0 flex items-center justify-center bg-gray-100/80 backdrop-blur-sm z-50">
+            <div className="fixed inset-0 flex items-center justify-center bg-gray-100/80 backdrop-blur-sm z-[1000]">
               <ClipLoader
                 color="#F59E0B"
                 size={60}
@@ -27,7 +27,6 @@ export default function Cars() {
             </div>
           )}
 
-          {/* Filtering Section */}
           <div className="flex justify-between md:justify-end my-6 gap-4 flex-wrap">
             <select
               onChange={(e) =>
@@ -83,14 +82,12 @@ export default function Cars() {
             </select>
           </div>
 
-          {/* Cars Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 justify-items-center gap-8 mb-12">
             {cars?.map((car) => (
               <CarCard key={car._id} car={car} />
             ))}
           </div>
 
-          {/* No Cars Message */}
           {(!cars || !cars.length) && (
             <p
               className="text-lg md:text-xl text-gray-500 text-center"
