@@ -2,7 +2,10 @@
 import { useState } from "react";
 import { RiEditBoxLine } from "react-icons/ri";
 import { toast } from "sonner";
-import { useGetSingleUserQuery, useUpdateUserMutation } from "../../../redux/features/user/userApi";
+import {
+  useGetSingleUserQuery,
+  useUpdateUserMutation,
+} from "../../../redux/features/user/userApi";
 import { useAppSelector } from "../../../redux/hooks";
 import { TUser } from "../../../redux/features/authentication/authSlice";
 import BookingHistory from "../components/BookingHistory";
@@ -135,7 +138,9 @@ const UserOverview = () => {
               style={{ fontFamily: "'Poppins', sans-serif" }}
             >
               <strong>Address:</strong>{" "}
-              <span className="text-blue-500">{user?.address || "Not provided"}</span>
+              <span className="text-blue-500">
+                {user?.address || "Not provided"}
+              </span>
             </p>
             <p
               className="mt-2 text-gray-600"

@@ -61,7 +61,8 @@ const TeamSection = () => {
             className="mt-4 text-gray-500 text-base md:text-lg max-w-2xl mx-auto"
             style={{ fontFamily: "'Poppins', sans-serif" }}
           >
-            Our dedicated professionals bring expertise and passion to ensure your journey is exceptional.
+            Our dedicated professionals bring expertise and passion to ensure
+            your journey is exceptional.
           </p>
         </div>
 

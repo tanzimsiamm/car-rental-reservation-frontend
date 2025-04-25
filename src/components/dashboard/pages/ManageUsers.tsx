@@ -2,7 +2,10 @@ import { useState } from "react";
 import { ClipLoader } from "react-spinners";
 import Swal from "sweetalert2";
 import { MdModeEdit } from "react-icons/md";
-import { useDeleteUserMutation, useGetUsersQuery } from "../../../redux/features/user/userApi";
+import {
+  useDeleteUserMutation,
+  useGetUsersQuery,
+} from "../../../redux/features/user/userApi";
 import { TUser } from "../../../redux/features/authentication/authSlice";
 import UpdateUserModal from "../components/modal/UpdateUserModal";
 

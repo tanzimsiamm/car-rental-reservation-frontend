@@ -3,7 +3,10 @@ import { useForm } from "react-hook-form";
 import { ClipLoader } from "react-spinners";
 import { toast } from "sonner";
 import { useEffect } from "react";
-import { useGetSingleUserQuery, useUpdateUserMutation } from "../../../../redux/features/user/userApi";
+import {
+  useGetSingleUserQuery,
+  useUpdateUserMutation,
+} from "../../../../redux/features/user/userApi";
 import { TUser } from "../../../../redux/features/authentication/authSlice";
 
 type TModalProps = {
@@ -12,10 +15,23 @@ type TModalProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function UpdateUserModal({ open, setOpen, userEmail }: TModalProps) {
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+export default function UpdateUserModal({
+  open,
+  setOpen,
+  userEmail,
+}: TModalProps) {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
   const [updateUser, { isLoading: updateLoading }] = useUpdateUserMutation();
-  const { data, isLoading: dataLoading, isSuccess } = useGetSingleUserQuery(userEmail);
+  const {
+    data,
+    isLoading: dataLoading,
+    isSuccess,
+  } = useGetSingleUserQuery(userEmail);
   const user: TUser = data?.data;
 
   useEffect(() => {
@@ -86,11 +102,14 @@ export default function UpdateUserModal({ open, setOpen, userEmail }: TModalProp
         {user && (
           <div className="flex justify-center mb-6">
             <img
-              src={user.image || "https://via.placeholder.com/150?text=User+Image"}
+              src={
+                user.image || "https://via.placeholder.com/150?text=User+Image"
+              }
               alt={user.name}
               className="w-32 h-32 object-cover rounded-xl"
               onError={(e) => {
-                e.currentTarget.src = "https://via.placeholder.com/150?text=User+Image";
+                e.currentTarget.src =
+                  "https://via.placeholder.com/150?text=User+Image";
               }}
             />
           </div>
@@ -110,7 +129,9 @@ export default function UpdateUserModal({ open, setOpen, userEmail }: TModalProp
             style={{ fontFamily: "'Poppins', sans-serif" }}
           />
           {errors.name && (
-            <span className="text-red-500 text-sm">{errors.name.message as string}</span>
+            <span className="text-red-500 text-sm">
+              {errors.name.message as string}
+            </span>
           )}
         </div>
 
@@ -134,7 +155,9 @@ export default function UpdateUserModal({ open, setOpen, userEmail }: TModalProp
             style={{ fontFamily: "'Poppins', sans-serif" }}
           />
           {errors.email && (
-            <span className="text-red-500 text-sm">{errors.email.message as string}</span>
+            <span className="text-red-500 text-sm">
+              {errors.email.message as string}
+            </span>
           )}
         </div>
 
@@ -154,7 +177,9 @@ export default function UpdateUserModal({ open, setOpen, userEmail }: TModalProp
             <option value="admin">Admin</option>
           </select>
           {errors.role && (
-            <span className="text-red-500 text-sm">{errors.role.message as string}</span>
+            <span className="text-red-500 text-sm">
+              {errors.role.message as string}
+            </span>
           )}
         </div>
 
@@ -172,7 +197,9 @@ export default function UpdateUserModal({ open, setOpen, userEmail }: TModalProp
             style={{ fontFamily: "'Poppins', sans-serif" }}
           />
           {errors.image && (
-            <span className="text-red-500 text-sm">{errors.image.message as string}</span>
+            <span className="text-red-500 text-sm">
+              {errors.image.message as string}
+            </span>
           )}
         </div>
 

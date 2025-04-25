@@ -18,7 +18,8 @@ export default function RelatedCarCard({ car }: { car: TCar }) {
             src={images[0] || "https://via.placeholder.com/150?text=Car+Image"}
             alt={name}
             onError={(e) => {
-              e.currentTarget.src = "https://via.placeholder.com/150?text=Car+Image";
+              e.currentTarget.src =
+                "https://via.placeholder.com/150?text=Car+Image";
             }}
           />
         </div>

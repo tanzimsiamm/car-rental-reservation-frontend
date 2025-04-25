@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { MdOutlineMenu, MdClose } from "react-icons/md";
+import { MdOutlineMenu } from "react-icons/md";
 import { useAppSelector } from "../../redux/hooks";
 import UserSidebar from "./components/UserSidebar";
 import AdminSidebar from "./components/AdminSidebar";

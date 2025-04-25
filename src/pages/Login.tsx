@@ -33,7 +33,10 @@ export default function Login() {
 
   const onSubmit = async (data: FieldValues) => {
     setLoading(true);
-    const res: any = await login({ email: data.email, password: data.password });
+    const res: any = await login({
+      email: data.email,
+      password: data.password,
+    });
 
     if (res?.error?.data?.message === "user not exist") {
       toast.error("Incorrect Email");
@@ -52,7 +55,11 @@ export default function Login() {
 
       toast.success("Logged In Successfully");
       const role = decoded?.role;
-      navigate(role === "user" ? "/dashboard/user-overview" : "/dashboard/admin-overview");
+      navigate(
+        role === "user"
+          ? "/dashboard/user-overview"
+          : "/dashboard/admin-overview"
+      );
     }
     setLoading(false);
   };

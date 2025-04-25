@@ -69,15 +69,16 @@ export default function CheckoutForm({
       return;
     }
 
-    const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card,
-        billing_details: {
-          name: currentUser?.name || "Guest",
-          email: currentUser?.email || "",
+    const { paymentIntent, error: confirmError } =
+      await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card,
+          billing_details: {
+            name: currentUser?.name || "Guest",
+            email: currentUser?.email || "",
+          },
         },
-      },
-    });
+      });
 
     if (confirmError) {
       toast.error(confirmError.message || "Payment confirmation failed");

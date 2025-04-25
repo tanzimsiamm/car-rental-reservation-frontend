@@ -1,4 +1,8 @@
-import { TruckIcon, LifebuoyIcon, ShieldCheckIcon } from "@heroicons/react/24/solid";
+import {
+  TruckIcon,
+  LifebuoyIcon,
+  ShieldCheckIcon,
+} from "@heroicons/react/24/solid";
 
 interface IconMap {
   [key: string]: React.ComponentType<React.SVGProps<SVGSVGElement>>;

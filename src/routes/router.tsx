@@ -21,67 +21,127 @@ import UserProtected from "./UserProtected";
 import MyBooking from "../components/dashboard/pages/MyBookings";
 import UserOverview from "../components/dashboard/pages/UserOverview";
 
-
-
 export const router = createBrowserRouter([
-    {
-        path: "*",
-        element: <ErrorPage />,
+  {
+    path: "*",
+    element: <ErrorPage />,
+  },
+  {
+    path: "/",
+    element: <Root />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
       },
-    {
-        path : '/',
-        element : <Root/> ,
-        children : [
-            {
-                path: '/',
-                element: <Home/>
-            },
-            {
-                path: '/cars/:carId',
-                element: <CarDetails/>
-            },
-            {
-                path: '/booking/:carId',
-                element: <LoginProtected> <Booking/> </LoginProtected>
-                    
-                    
-            },
-            {
-                path: '/cars',
-                element: <Cars/>
-            },
-            {
-                path: '/order-successful',
-                element: <OrderSuccessPage/>
-            },
-            {
-                path: '/about-us',
-                element: <AboutUs/>
-            },
-            // authentication 
-            {
-                path : '/sign-up',
-                element : <SignUp/> ,
-            },
-            {
-                path : '/login',
-                element : <Login/> ,
-            },
-        ]
-    },
-    // dashboard 
+      {
+        path: "/cars/:carId",
+        element: <CarDetails />,
+      },
+      {
+        path: "/booking/:carId",
+        element: (
+          <LoginProtected>
+            {" "}
+            <Booking />{" "}
+          </LoginProtected>
+        ),
+      },
+      {
+        path: "/cars",
+        element: <Cars />,
+      },
+      {
+        path: "/order-successful",
+        element: <OrderSuccessPage />,
+      },
+      {
+        path: "/about-us",
+        element: <AboutUs />,
+      },
+      // authentication
+      {
+        path: "/sign-up",
+        element: <SignUp />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+    ],
+  },
+  // dashboard
 
-    {path: "/dashboard", element:  <Dashboard/>, children: [
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+    children: [
+      // for admin
+      {
+        path: "manage-cars",
+        element: (
+          <AdminProtected>
+            {" "}
+            <ManageCars />
+          </AdminProtected>
+        ),
+      },
+      {
+        path: "manage-bookings",
+        element: (
+          <AdminProtected>
+            {" "}
+            <ManageBooking />
+          </AdminProtected>
+        ),
+      },
+      {
+        path: "manage-return-cars",
+        element: (
+          <AdminProtected>
+            {" "}
+            <ManageReturnCars />
+          </AdminProtected>
+        ),
+      },
+      {
+        path: "manage-users",
+        element: (
+          <AdminProtected>
+            {" "}
+            <ManageUsers />
+          </AdminProtected>
+        ),
+      },
+      {
+        path: "admin-overview",
+        element: (
+          <AdminProtected>
+            {" "}
+            <AdminOverview />
+          </AdminProtected>
+        ),
+      },
 
-        // for admin
-        {path: "manage-cars", element: <AdminProtected> <ManageCars/></AdminProtected> },
-        {path: "manage-bookings", element: <AdminProtected> <ManageBooking/></AdminProtected> },
-        {path: "manage-return-cars", element: <AdminProtected> <ManageReturnCars/></AdminProtected> },
-        {path: "manage-users", element: <AdminProtected> <ManageUsers/></AdminProtected> },
-        {path: "admin-overview", element: <AdminProtected> <AdminOverview/></AdminProtected> },
-
-// for user 
-        {path: "my-bookings", element: <UserProtected>  <MyBooking/></UserProtected> },
-        {path: "user-overview", element: <UserProtected>  <UserOverview/> </UserProtected>},
-    ]},
-])
+      // for user
+      {
+        path: "my-bookings",
+        element: (
+          <UserProtected>
+            {" "}
+            <MyBooking />
+          </UserProtected>
+        ),
+      },
+      {
+        path: "user-overview",
+        element: (
+          <UserProtected>
+            {" "}
+            <UserOverview />{" "}
+          </UserProtected>
+        ),
+      },
+    ],
+  },
+]);

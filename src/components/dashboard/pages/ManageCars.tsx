@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { ClipLoader } from "react-spinners";
 import Swal from "sweetalert2";
-import { useDeleteCarMutation, useGetCarsQuery } from "../../../redux/features/car/carApi";
+import {
+  useDeleteCarMutation,
+  useGetCarsQuery,
+} from "../../../redux/features/car/carApi";
 import { TCar } from "../../../types";
 import CreateCarModal from "../components/modal/CreateCarModal";
 import UpdateCarModal from "../components/modal/UpdateCarModal";
@@ -70,9 +73,15 @@ export default function ManageCars() {
         </button>
       </div>
 
-      {openCreateModal && <CreateCarModal open={openCreateModal} setOpen={setOpenCreateModal} />}
+      {openCreateModal && (
+        <CreateCarModal open={openCreateModal} setOpen={setOpenCreateModal} />
+      )}
       {openUpdateModal && (
-        <UpdateCarModal carId={updateProductId} open={openUpdateModal} setOpen={setOpenUpdateModal} />
+        <UpdateCarModal
+          carId={updateProductId}
+          open={openUpdateModal}
+          setOpen={setOpenUpdateModal}
+        />
       )}
 
       <div className="overflow-x-auto bg-white rounded-xl shadow-lg">
@@ -155,11 +164,15 @@ export default function ManageCars() {
                 >
                   <td className="px-6 py-4">
                     <img
-                      src={car.images[0] || "https://via.placeholder.com/150?text=Car+Image"}
+                      src={
+                        car.images[0] ||
+                        "https://via.placeholder.com/150?text=Car+Image"
+                      }
                       alt={car.name}
                       className="w-16 h-16 object-contain rounded-full"
                       onError={(e) => {
-                        e.currentTarget.src = "https://via.placeholder.com/150?text=Car+Image";
+                        e.currentTarget.src =
+                          "https://via.placeholder.com/150?text=Car+Image";
                       }}
                     />
                   </td>
@@ -183,7 +196,9 @@ export default function ManageCars() {
                   </td>
                   <td
                     className={`px-6 py-4 ${
-                      car.status === "available" ? "text-green-500" : "text-red-500"
+                      car.status === "available"
+                        ? "text-green-500"
+                        : "text-red-500"
                     }`}
                     style={{ fontFamily: "'Poppins', sans-serif" }}
                   >

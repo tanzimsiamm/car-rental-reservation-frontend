@@ -11,7 +11,11 @@ type TModalProps = {
 };
 
 export default function CreateCarModal({ open, setOpen }: TModalProps) {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [createCar, { isLoading }] = useCreateCarMutation();
 
   const onSubmit = async (data: any) => {
@@ -23,8 +27,13 @@ export default function CreateCarModal({ open, setOpen }: TModalProps) {
       location: data.location,
       pricePerHour: parseInt(data.pricePerHour),
       description: data.description,
-      features: data.features.toUpperCase().split(",").map((f: string) => f.trim()),
-      images: [data.image1, data.image2, data.image3].filter((img: string) => img),
+      features: data.features
+        .toUpperCase()
+        .split(",")
+        .map((f: string) => f.trim()),
+      images: [data.image1, data.image2, data.image3].filter(
+        (img: string) => img
+      ),
     };
 
     try {
@@ -83,7 +92,9 @@ export default function CreateCarModal({ open, setOpen }: TModalProps) {
             style={{ fontFamily: "'Poppins', sans-serif" }}
           />
           {errors.name && (
-            <span className="text-red-500 text-sm">{errors.name.message as string}</span>
+            <span className="text-red-500 text-sm">
+              {errors.name.message as string}
+            </span>
           )}
         </div>
 
@@ -110,7 +121,9 @@ export default function CreateCarModal({ open, setOpen }: TModalProps) {
             <option value="convertibles">Convertibles</option>
           </select>
           {errors.carType && (
-            <span className="text-red-500 text-sm">{errors.carType.message as string}</span>
+            <span className="text-red-500 text-sm">
+              {errors.carType.message as string}
+            </span>
           )}
         </div>
 
@@ -123,7 +136,9 @@ export default function CreateCarModal({ open, setOpen }: TModalProps) {
           </label>
           <select
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none transition-all duration-300"
-            {...register("isElectric", { required: "Electric status is required" })}
+            {...register("isElectric", {
+              required: "Electric status is required",
+            })}
             style={{ fontFamily: "'Poppins', sans-serif" }}
           >
             <option value="" disabled>
@@ -133,7 +148,9 @@ export default function CreateCarModal({ open, setOpen }: TModalProps) {
             <option value="no">No</option>
           </select>
           {errors.isElectric && (
-            <span className="text-red-500 text-sm">{errors.isElectric.message as string}</span>
+            <span className="text-red-500 text-sm">
+              {errors.isElectric.message as string}
+            </span>
           )}
         </div>
 
@@ -151,7 +168,9 @@ export default function CreateCarModal({ open, setOpen }: TModalProps) {
             style={{ fontFamily: "'Poppins', sans-serif" }}
           />
           {errors.color && (
-            <span className="text-red-500 text-sm">{errors.color.message as string}</span>
+            <span className="text-red-500 text-sm">
+              {errors.color.message as string}
+            </span>
           )}
         </div>
 
@@ -169,7 +188,9 @@ export default function CreateCarModal({ open, setOpen }: TModalProps) {
             style={{ fontFamily: "'Poppins', sans-serif" }}
           />
           {errors.location && (
-            <span className="text-red-500 text-sm">{errors.location.message as string}</span>
+            <span className="text-red-500 text-sm">
+              {errors.location.message as string}
+            </span>
           )}
         </div>
 
@@ -190,7 +211,9 @@ export default function CreateCarModal({ open, setOpen }: TModalProps) {
             style={{ fontFamily: "'Poppins', sans-serif" }}
           />
           {errors.pricePerHour && (
-            <span className="text-red-500 text-sm">{errors.pricePerHour.message as string}</span>
+            <span className="text-red-500 text-sm">
+              {errors.pricePerHour.message as string}
+            </span>
           )}
         </div>
 
@@ -211,7 +234,9 @@ export default function CreateCarModal({ open, setOpen }: TModalProps) {
             style={{ fontFamily: "'Poppins', sans-serif" }}
           />
           {errors.features && (
-            <span className="text-red-500 text-sm">{errors.features.message as string}</span>
+            <span className="text-red-500 text-sm">
+              {errors.features.message as string}
+            </span>
           )}
         </div>
 
@@ -224,12 +249,16 @@ export default function CreateCarModal({ open, setOpen }: TModalProps) {
           </label>
           <textarea
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none transition-all duration-300"
-            {...register("description", { required: "Description is required" })}
+            {...register("description", {
+              required: "Description is required",
+            })}
             style={{ fontFamily: "'Poppins', sans-serif" }}
             rows={4}
           />
           {errors.description && (
-            <span className="text-red-500 text-sm">{errors.description.message as string}</span>
+            <span className="text-red-500 text-sm">
+              {errors.description.message as string}
+            </span>
           )}
         </div>
 

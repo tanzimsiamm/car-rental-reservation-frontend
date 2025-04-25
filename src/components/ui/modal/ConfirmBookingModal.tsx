@@ -10,7 +10,11 @@ type TModalProps = {
   booking: TBooking;
 };
 
-export default function ConfirmBookingModal({ open, setOpen, booking }: TModalProps) {
+export default function ConfirmBookingModal({
+  open,
+  setOpen,
+  booking,
+}: TModalProps) {
   const [createBooking, { isLoading }] = useCreateBookingMutation();
   const navigate = useNavigate();
 
@@ -30,7 +34,8 @@ export default function ConfirmBookingModal({ open, setOpen, booking }: TModalPr
     }
   };
 
-  const { car, date, location, paymentMethod, phone, startTime, user } = booking;
+  const { car, date, location, paymentMethod, phone, startTime, user } =
+    booking;
 
   // Calculate total cost (assuming 1-hour booking if no duration is provided)
   const totalCost = car.pricePerHour.toFixed(2);
@@ -73,11 +78,14 @@ export default function ConfirmBookingModal({ open, setOpen, booking }: TModalPr
 
         <div className="flex items-center mb-6">
           <img
-            src={user.image || "https://via.placeholder.com/150?text=User+Image"}
+            src={
+              user.image || "https://via.placeholder.com/150?text=User+Image"
+            }
             alt={`${user.name}'s profile`}
             className="w-12 h-12 rounded-full mr-4 object-cover"
             onError={(e) => {
-              e.currentTarget.src = "https://via.placeholder.com/150?text=User+Image";
+              e.currentTarget.src =
+                "https://via.placeholder.com/150?text=User+Image";
             }}
           />
           <div>
@@ -124,11 +132,14 @@ export default function ConfirmBookingModal({ open, setOpen, booking }: TModalPr
 
         <div className="mb-6">
           <img
-            src={car.images[0] || "https://via.placeholder.com/150?text=Car+Image"}
+            src={
+              car.images[0] || "https://via.placeholder.com/150?text=Car+Image"
+            }
             alt={car.name}
             className="w-full h-40 object-cover rounded-lg mb-2"
             onError={(e) => {
-              e.currentTarget.src = "https://via.placeholder.com/150?text=Car+Image";
+              e.currentTarget.src =
+                "https://via.placeholder.com/150?text=Car+Image";
             }}
           />
           <h3
@@ -155,7 +166,8 @@ export default function ConfirmBookingModal({ open, setOpen, booking }: TModalPr
             className="text-sm text-gray-700"
             style={{ fontFamily: "'Poppins', sans-serif" }}
           >
-            <span className="font-semibold">Payment Method:</span> {paymentMethod}
+            <span className="font-semibold">Payment Method:</span>{" "}
+            {paymentMethod}
           </p>
         </div>
 

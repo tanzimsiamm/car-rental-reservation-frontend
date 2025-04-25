@@ -5,7 +5,7 @@ const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({
     // baseUrl: "http://localhost:5000",
-    baseUrl : 'https://car-rental-backend-drab-sigma.vercel.app',
+    baseUrl: "https://car-rental-backend-drab-sigma.vercel.app",
 
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.token;

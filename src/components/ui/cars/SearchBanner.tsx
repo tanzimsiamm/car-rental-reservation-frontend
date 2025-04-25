@@ -39,7 +39,8 @@ export default function SearchBanner({ setFilterQuery }: TModalProps) {
             className="text-base md:text-lg text-gray-200 max-w-lg"
             style={{ textShadow: "1px 1px 2px rgba(0, 0, 0, 0.4)" }}
           >
-            Find the perfect car for your next adventure with our wide range of vehicles.
+            Find the perfect car for your next adventure with our wide range of
+            vehicles.
           </p>
 
           {/* Search Bar */}

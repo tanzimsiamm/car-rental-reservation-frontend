@@ -58,11 +58,15 @@ const BookingHistory = () => {
             >
               <div className="h-48 overflow-hidden">
                 <img
-                  src={booking.car.images[0] || "https://via.placeholder.com/300?text=Car+Image"}
+                  src={
+                    booking.car.images[0] ||
+                    "https://via.placeholder.com/300?text=Car+Image"
+                  }
                   alt={booking.car.name || "Car"}
                   className="w-full h-full object-cover"
                   onError={(e) => {
-                    e.currentTarget.src = "https://via.placeholder.com/300?text=Car+Image";
+                    e.currentTarget.src =
+                      "https://via.placeholder.com/300?text=Car+Image";
                   }}
                 />
               </div>
@@ -90,7 +94,8 @@ const BookingHistory = () => {
                     })}
                   </p>
                   <p>
-                    <strong>Price per Hour:</strong> ${booking.car.pricePerHour.toFixed(2)}
+                    <strong>Price per Hour:</strong> $
+                    {booking.car.pricePerHour.toFixed(2)}
                   </p>
                   <p>
                     <strong>Car Status:</strong>{" "}

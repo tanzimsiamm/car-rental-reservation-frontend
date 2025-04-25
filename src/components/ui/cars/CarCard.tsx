@@ -5,12 +5,12 @@ export default function CarCard({ car }: { car: TCar }) {
   const { _id, name, images, pricePerHour } = car;
 
   return (
-    <div className="rounded-2xl w-full h-full flex flex-col bg-white/80 backdrop-blur-sm border border-amber-500/50 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+    <div className="rounded-2xl w-full h-full flex flex-col bg-white/80 backdrop-blur-sm border shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
       {/* Image Section */}
       <div className="p-6 pb-0 flex items-center justify-center flex-grow">
         <div className="relative group">
           <img
-            className="w-48 h-48 object-contain rounded-lg group-hover:scale-105 transition-transform duration-300"
+            className="w-56 h-56 object-contain rounded-lg group-hover:scale-105 transition-transform duration-300"
             src={images[0]}
             alt={`${name} image`}
           />

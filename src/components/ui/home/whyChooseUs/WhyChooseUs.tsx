@@ -1,31 +1,41 @@
 import { Link } from "react-router-dom";
-import { TruckIcon, LifebuoyIcon, ShieldCheckIcon } from "@heroicons/react/24/solid";
+import {
+  TruckIcon,
+  LifebuoyIcon,
+  ShieldCheckIcon,
+} from "@heroicons/react/24/solid";
 import Card from "./Card";
 
 const services = [
   {
     id: 1,
     title: "Diverse Vehicle Selection",
-    description: "Explore a wide range of cars, from budget-friendly compacts to premium SUVs and luxury models.",
+    description:
+      "Explore a wide range of cars, from budget-friendly compacts to premium SUVs and luxury models.",
     icon: TruckIcon,
   },
   {
     id: 2,
     title: "Top-Notch Customer Support",
-    description: "Our dedicated team ensures a smooth rental experience with 24/7 assistance.",
+    description:
+      "Our dedicated team ensures a smooth rental experience with 24/7 assistance.",
     icon: LifebuoyIcon,
   },
   {
     id: 3,
     title: "Secure Booking Process",
-    description: "Book with confidence using our safe and transparent transaction system.",
+    description:
+      "Book with confidence using our safe and transparent transaction system.",
     icon: ShieldCheckIcon,
   },
 ];
 
 const WhyChooseUs = () => {
   return (
-    <section className="bg-gray-100 py-12" aria-labelledby="why-choose-us-heading">
+    <section
+      className="bg-gray-100 py-12"
+      aria-labelledby="why-choose-us-heading"
+    >
       <div className="container mx-auto px-4">
         <h2
           className="text-3xl md:text-4xl lg:text-5xl font-bold text-center"

@@ -17,18 +17,33 @@ type TStatistics = {
   totalRevenue: number;
 };
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const AdminOverview = () => {
   const { data: statisticsData, isLoading } = useGetStatisticsQuery(undefined);
-  const statistics: TStatistics = statisticsData?.data || { totalBookings: 0, availableCars: 0, totalRevenue: 0 };
+  const statistics: TStatistics = statisticsData?.data || {
+    totalBookings: 0,
+    availableCars: 0,
+    totalRevenue: 0,
+  };
 
   const data = {
     labels: ["Total Bookings", "Available Cars", "Total Revenue"],
     datasets: [
       {
         label: "Statistics",
-        data: [statistics.totalBookings, statistics.availableCars, statistics.totalRevenue],
+        data: [
+          statistics.totalBookings,
+          statistics.availableCars,
+          statistics.totalRevenue,
+        ],
         backgroundColor: ["#F59E0B", "#10B981", "#D97706"],
         borderColor: ["#F59E0B", "#10B981", "#D97706"],
         borderWidth: 1,
@@ -89,7 +104,8 @@ const AdminOverview = () => {
                 alt="Bookings"
                 className="mx-auto mb-4 w-16 h-16 object-contain"
                 onError={(e) => {
-                  e.currentTarget.src = "https://via.placeholder.com/150?text=Icon";
+                  e.currentTarget.src =
+                    "https://via.placeholder.com/150?text=Icon";
                 }}
               />
               <div
@@ -111,7 +127,8 @@ const AdminOverview = () => {
                 alt="Cars"
                 className="mx-auto mb-4 w-20 h-16 object-contain"
                 onError={(e) => {
-                  e.currentTarget.src = "https://via.placeholder.com/150?text=Icon";
+                  e.currentTarget.src =
+                    "https://via.placeholder.com/150?text=Icon";
                 }}
               />
               <div
@@ -133,7 +150,8 @@ const AdminOverview = () => {
                 alt="Revenue"
                 className="mx-auto mb-4 w-16 h-16 object-contain"
                 onError={(e) => {
-                  e.currentTarget.src = "https://via.placeholder.com/150?text=Icon";
+                  e.currentTarget.src =
+                    "https://via.placeholder.com/150?text=Icon";
                 }}
               />
               <div

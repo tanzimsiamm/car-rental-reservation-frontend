@@ -28,7 +28,8 @@ function FeaturedCars() {
           className="text-base md:text-lg text-gray-500 text-center max-w-lg mx-auto mt-4 mb-10 md:mb-12 lg:mb-16"
           style={{ fontFamily: "'Poppins', sans-serif" }}
         >
-          Discover our top vehicles for your next adventure, curated for style and performance.
+          Discover our top vehicles for your next adventure, curated for style
+          and performance.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 justify-items-center gap-8 mb-12">

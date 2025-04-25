@@ -145,7 +145,8 @@ export default function SignUp() {
                 {...register("password", {
                   required: "Password is required",
                   pattern: {
-                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{6,8}$/,
+                    value:
+                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{6,8}$/,
                     message:
                       "Password must include 1 uppercase, 1 lowercase, 1 number, 1 special character, and be 6-8 characters long",
                   },
@@ -185,26 +186,34 @@ export default function SignUp() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none transition-all duration-300 bg-white"
                 {...register("confirmPassword", {
                   required: "Please confirm your password",
-                  validate: (value) => value === password || "Passwords do not match",
+                  validate: (value) =>
+                    value === password || "Passwords do not match",
                 })}
               />
               <button
                 type="button"
                 onClick={toggleConfirmPasswordVisibility}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
-                aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                aria-label={
+                  showConfirmPassword ? "Hide password" : "Show password"
+                }
               >
-                {showConfirmPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+                {showConfirmPassword ? (
+                  <FaEyeSlash size={20} />
+                ) : (
+                  <FaEye size={20} />
+                )}
               </button>
             </div>
-            {errors.confirmPassword && typeof errors.confirmPassword.message === "string" && (
-              <p
-                className="text-red-500 text-xs mt-1"
-                style={{ fontFamily: "'Poppins', sans-serif" }}
-              >
-                {errors.confirmPassword.message}
-              </p>
-            )}
+            {errors.confirmPassword &&
+              typeof errors.confirmPassword.message === "string" && (
+                <p
+                  className="text-red-500 text-xs mt-1"
+                  style={{ fontFamily: "'Poppins', sans-serif" }}
+                >
+                  {errors.confirmPassword.message}
+                </p>
+              )}
           </div>
 
           {/* Phone Number */}
@@ -226,14 +235,15 @@ export default function SignUp() {
                 },
               })}
             />
-            {errors.phoneNumber && typeof errors.phoneNumber.message === "string" && (
-              <p
-                className="text-red-500 text-xs mt-1"
-                style={{ fontFamily: "'Poppins', sans-serif" }}
-              >
-                {errors.phoneNumber.message}
-              </p>
-            )}
+            {errors.phoneNumber &&
+              typeof errors.phoneNumber.message === "string" && (
+                <p
+                  className="text-red-500 text-xs mt-1"
+                  style={{ fontFamily: "'Poppins', sans-serif" }}
+                >
+                  {errors.phoneNumber.message}
+                </p>
+              )}
           </div>
 
           {/* Terms & Conditions */}

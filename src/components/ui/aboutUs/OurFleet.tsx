@@ -2,33 +2,45 @@ const OurFleet = () => {
   const vehicles = [
     {
       title: "Compact Cars",
-      description: "Nimble and efficient, ideal for urban exploration and easy parking.",
-      image: "https://images.unsplash.com/photo-1550355291-bbee04a92027?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      description:
+        "Nimble and efficient, ideal for urban exploration and easy parking.",
+      image:
+        "https://images.unsplash.com/photo-1550355291-bbee04a92027?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     },
     {
       title: "SUVs",
-      description: "Roomy and versatile, perfect for family adventures and rugged terrains.",
-      image: "https://images.unsplash.com/photo-1580273916550-ebd7c9907b7f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      description:
+        "Roomy and versatile, perfect for family adventures and rugged terrains.",
+      image:
+        "https://images.unsplash.com/photo-1580273916550-ebd7c9907b7f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     },
     {
       title: "Luxury Cars",
-      description: "Unmatched elegance and comfort for a premium driving experience.",
-      image: "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      description:
+        "Unmatched elegance and comfort for a premium driving experience.",
+      image:
+        "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     },
     {
       title: "Convertibles",
-      description: "Embrace the open road with our stylish and exhilarating convertibles.",
-      image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      description:
+        "Embrace the open road with our stylish and exhilarating convertibles.",
+      image:
+        "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     },
     {
       title: "Pickup Trucks",
-      description: "Robust and reliable, built for tough jobs and heavy-duty tasks.",
-      image: "https://images.unsplash.com/photo-1586861915637-518d6e6e9f95?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      description:
+        "Robust and reliable, built for tough jobs and heavy-duty tasks.",
+      image:
+        "https://images.unsplash.com/photo-1586861915637-518d6e6e9f95?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     },
     {
       title: "Electric Cars",
-      description: "Sustainable and innovative, drive the future with our electric vehicles.",
-      image: "https://images.unsplash.com/photo-1616788494707-ec28f08d05a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      description:
+        "Sustainable and innovative, drive the future with our electric vehicles.",
+      image:
+        "https://images.unsplash.com/photo-1616788494707-ec28f08d05a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     },
   ];
 
@@ -53,7 +65,8 @@ const OurFleet = () => {
             className="mt-4 text-gray-500 text-base md:text-lg max-w-2xl mx-auto"
             style={{ fontFamily: "'Poppins', sans-serif" }}
           >
-            Browse our diverse collection of vehicles, crafted to enhance every journey, from daily commutes to epic road trips.
+            Browse our diverse collection of vehicles, crafted to enhance every
+            journey, from daily commutes to epic road trips.
           </p>
         </div>
 
@@ -69,7 +82,8 @@ const OurFleet = () => {
                   alt={vehicle.title}
                   className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300"
                   onError={(e) => {
-                    e.currentTarget.src = "https://via.placeholder.com/800x600?text=Image+Not+Found";
+                    e.currentTarget.src =
+                      "https://via.placeholder.com/800x600?text=Image+Not+Found";
                   }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>

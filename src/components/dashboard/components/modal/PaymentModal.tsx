@@ -40,10 +40,14 @@ export default function PaymentModal({ setOpen, bookingId }: TModalProps) {
             <section className="flex items-center gap-4 mb-6">
               <img
                 className="w-24 h-16 object-contain"
-                src={booking?.car?.images[0] || "https://via.placeholder.com/150?text=Car+Image"}
+                src={
+                  booking?.car?.images[0] ||
+                  "https://via.placeholder.com/150?text=Car+Image"
+                }
                 alt={booking?.car?.name}
                 onError={(e) => {
-                  e.currentTarget.src = "https://via.placeholder.com/150?text=Car+Image";
+                  e.currentTarget.src =
+                    "https://via.placeholder.com/150?text=Car+Image";
                 }}
               />
               <div>

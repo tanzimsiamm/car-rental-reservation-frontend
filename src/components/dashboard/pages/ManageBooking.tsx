@@ -16,8 +16,10 @@ import UpdateBookingModal from "../components/modal/UpdateBookingModal";
 export default function ManageBooking() {
   const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
   const { data, isLoading: bookingsLoading } = useGetBookingsQuery(undefined);
-  const [updateBooking, { isLoading: updateLoading }] = useUpdateBookingMutation();
-  const [cancelBooking, { isLoading: cancelLoading }] = useCancelBookingMutation();
+  const [updateBooking, { isLoading: updateLoading }] =
+    useUpdateBookingMutation();
+  const [cancelBooking, { isLoading: cancelLoading }] =
+    useCancelBookingMutation();
   const [returnCar] = useReturnCarMutation();
   const [updateBookingId, setUpdateBookingId] = useState("");
 
@@ -247,7 +249,8 @@ export default function ManageBooking() {
                     {booking.status}
                   </td>
                   <td className="px-6 py-4">
-                    {booking.status === "cancelled" || booking.status === "completed" ? (
+                    {booking.status === "cancelled" ||
+                    booking.status === "completed" ? (
                       <span className="text-gray-400">-</span>
                     ) : (
                       <button
@@ -260,12 +263,15 @@ export default function ManageBooking() {
                     )}
                   </td>
                   <td className="px-6 py-4">
-                    {booking.status === "cancelled" || booking.status === "completed" ? (
+                    {booking.status === "cancelled" ||
+                    booking.status === "completed" ? (
                       <span className="text-gray-400">-</span>
                     ) : (
                       <button
                         className="text-red-500 hover:text-red-600 transition-colors duration-200"
-                        onClick={() => cancelBookingIntoDB(booking._id!, booking.car._id!)}
+                        onClick={() =>
+                          cancelBookingIntoDB(booking._id!, booking.car._id!)
+                        }
                         aria-label="Cancel booking"
                       >
                         <FcCancel size={24} />
@@ -273,7 +279,8 @@ export default function ManageBooking() {
                     )}
                   </td>
                   <td className="px-6 py-4">
-                    {booking.status === "cancelled" || booking.status === "completed" ? (
+                    {booking.status === "cancelled" ||
+                    booking.status === "completed" ? (
                       <span className="text-gray-400">-</span>
                     ) : (
                       <button

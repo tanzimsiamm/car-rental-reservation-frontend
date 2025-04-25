@@ -12,7 +12,9 @@ interface FilterQuery {
 }
 
 export default function RelatedCars() {
-  const [filterQuery, setFilterQuery] = useState<FilterQuery>({ status: "available" });
+  const [filterQuery, setFilterQuery] = useState<FilterQuery>({
+    status: "available",
+  });
   const { data, isFetching } = useGetCarsQuery(filterQuery);
   const cars: TCar[] = data?.data || [];
 

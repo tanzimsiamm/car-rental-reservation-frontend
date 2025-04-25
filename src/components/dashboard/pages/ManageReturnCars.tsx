@@ -116,11 +116,15 @@ export default function ManageReturnCars() {
                 >
                   <td className="px-6 py-4">
                     <img
-                      src={car.images[0] || "https://via.placeholder.com/150?text=Car+Image"}
+                      src={
+                        car.images[0] ||
+                        "https://via.placeholder.com/150?text=Car+Image"
+                      }
                       alt={car.name}
                       className="w-16 h-16 object-contain rounded-full"
                       onError={(e) => {
-                        e.currentTarget.src = "https://via.placeholder.com/150?text=Car+Image";
+                        e.currentTarget.src =
+                          "https://via.placeholder.com/150?text=Car+Image";
                       }}
                     />
                   </td>
@@ -150,7 +154,9 @@ export default function ManageReturnCars() {
                   </td>
                   <td
                     className={`px-6 py-4 ${
-                      car.status === "available" ? "text-green-500" : "text-red-500"
+                      car.status === "available"
+                        ? "text-green-500"
+                        : "text-red-500"
                     }`}
                     style={{ fontFamily: "'Poppins', sans-serif" }}
                   >

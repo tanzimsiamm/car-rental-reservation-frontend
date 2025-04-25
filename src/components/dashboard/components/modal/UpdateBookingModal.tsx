@@ -15,10 +15,24 @@ type TModalProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function UpdateBookingModal({ open, setOpen, bookingId }: TModalProps) {
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
-  const [updateBooking, { isLoading: updateLoading }] = useUpdateBookingMutation();
-  const { data, isLoading: dataLoading, isSuccess } = useGetSingleBookingQuery(bookingId);
+export default function UpdateBookingModal({
+  open,
+  setOpen,
+  bookingId,
+}: TModalProps) {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+  const [updateBooking, { isLoading: updateLoading }] =
+    useUpdateBookingMutation();
+  const {
+    data,
+    isLoading: dataLoading,
+    isSuccess,
+  } = useGetSingleBookingQuery(bookingId);
   const booking: TBooking = data?.data;
 
   useEffect(() => {
@@ -82,10 +96,14 @@ export default function UpdateBookingModal({ open, setOpen, bookingId }: TModalP
             <section className="flex items-center gap-4 mb-6">
               <img
                 className="w-20 h-20 object-contain rounded-lg"
-                src={booking?.car?.images[0] || "https://via.placeholder.com/150?text=Car+Image"}
+                src={
+                  booking?.car?.images[0] ||
+                  "https://via.placeholder.com/150?text=Car+Image"
+                }
                 alt={booking?.car?.name}
                 onError={(e) => {
-                  e.currentTarget.src = "https://via.placeholder.com/150?text=Car+Image";
+                  e.currentTarget.src =
+                    "https://via.placeholder.com/150?text=Car+Image";
                 }}
               />
               <h2
@@ -110,7 +128,9 @@ export default function UpdateBookingModal({ open, setOpen, bookingId }: TModalP
                 style={{ fontFamily: "'Poppins', sans-serif" }}
               />
               {errors.location && (
-                <span className="text-red-500 text-sm">{errors.location.message as string}</span>
+                <span className="text-red-500 text-sm">
+                  {errors.location.message as string}
+                </span>
               )}
             </div>
 
@@ -134,7 +154,9 @@ export default function UpdateBookingModal({ open, setOpen, bookingId }: TModalP
                 style={{ fontFamily: "'Poppins', sans-serif" }}
               />
               {errors.phone && (
-                <span className="text-red-500 text-sm">{errors.phone.message as string}</span>
+                <span className="text-red-500 text-sm">
+                  {errors.phone.message as string}
+                </span>
               )}
             </div>
 
@@ -152,7 +174,9 @@ export default function UpdateBookingModal({ open, setOpen, bookingId }: TModalP
                 style={{ fontFamily: "'Poppins', sans-serif" }}
               />
               {errors.date && (
-                <span className="text-red-500 text-sm">{errors.date.message as string}</span>
+                <span className="text-red-500 text-sm">
+                  {errors.date.message as string}
+                </span>
               )}
             </div>
 
@@ -166,11 +190,15 @@ export default function UpdateBookingModal({ open, setOpen, bookingId }: TModalP
               <input
                 type="time"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none transition-all duration-300"
-                {...register("startTime", { required: "Start time is required" })}
+                {...register("startTime", {
+                  required: "Start time is required",
+                })}
                 style={{ fontFamily: "'Poppins', sans-serif" }}
               />
               {errors.startTime && (
-                <span className="text-red-500 text-sm">{errors.startTime.message as string}</span>
+                <span className="text-red-500 text-sm">
+                  {errors.startTime.message as string}
+                </span>
               )}
             </div>
 
@@ -183,14 +211,18 @@ export default function UpdateBookingModal({ open, setOpen, bookingId }: TModalP
               </label>
               <select
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none transition-all duration-300"
-                {...register("paymentMethod", { required: "Payment method is required" })}
+                {...register("paymentMethod", {
+                  required: "Payment method is required",
+                })}
                 style={{ fontFamily: "'Poppins', sans-serif" }}
               >
                 <option value="stripe">Stripe Payment</option>
                 <option value="amr-pay">Amar Pay</option>
               </select>
               {errors.paymentMethod && (
-                <span className="text-red-500 text-sm">{errors.paymentMethod.message as string}</span>
+                <span className="text-red-500 text-sm">
+                  {errors.paymentMethod.message as string}
+                </span>
               )}
             </div>
 

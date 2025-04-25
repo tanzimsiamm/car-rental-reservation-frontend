@@ -30,7 +30,10 @@ export default function Cars() {
           <div className="flex justify-between md:justify-end my-6 gap-4 flex-wrap">
             <select
               onChange={(e) =>
-                setFilterQuery((prev) => ({ ...prev, sortByCost: e.target.value }))
+                setFilterQuery((prev) => ({
+                  ...prev,
+                  sortByCost: e.target.value,
+                }))
               }
               className="w-full md:w-48 bg-white/90 backdrop-blur-sm border border-amber-500/50 rounded-lg shadow-md hover:shadow-lg focus:ring-2 focus:ring-yellow-500 focus:outline-none transition-all duration-300 text-zinc-800 text-sm md:text-base p-2"
               style={{ fontFamily: "'Poppins', sans-serif" }}
@@ -45,7 +48,10 @@ export default function Cars() {
 
             <select
               onChange={(e) =>
-                setFilterQuery((prev) => ({ ...prev, costRange: e.target.value }))
+                setFilterQuery((prev) => ({
+                  ...prev,
+                  costRange: e.target.value,
+                }))
               }
               className="w-full md:w-48 bg-white/90 backdrop-blur-sm border border-amber-500/50 rounded-lg shadow-md hover:shadow-lg focus:ring-2 focus:ring-yellow-500 focus:outline-none transition-all duration-300 text-zinc-800 text-sm md:text-base p-2"
               style={{ fontFamily: "'Poppins', sans-serif" }}
@@ -94,7 +100,8 @@ export default function Cars() {
               style={{ fontFamily: "'Poppins', sans-serif" }}
               role="alert"
             >
-              No <span className="text-yellow-500 font-semibold">Cars</span> Found
+              No <span className="text-yellow-500 font-semibold">Cars</span>{" "}
+              Found
             </p>
           )}
         </section>
