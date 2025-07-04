@@ -14,9 +14,14 @@ type TModalProps = {
   bookingId: string;
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onSuccess?: () => void;
 };
 
-export default function PaymentModal({ setOpen, bookingId }: TModalProps) {
+export default function PaymentModal({ 
+  setOpen, 
+  bookingId,
+  onSuccess 
+}: TModalProps) {
   const { data, isLoading } = useGetSingleBookingQuery(bookingId);
   const booking: TBooking = data?.data;
 
@@ -51,16 +56,10 @@ export default function PaymentModal({ setOpen, bookingId }: TModalProps) {
                 }}
               />
               <div>
-                <h2
-                  className="text-lg font-semibold text-gray-800"
-                  style={{ fontFamily: "'Poppins', sans-serif" }}
-                >
+                <h2 className="text-lg font-semibold text-gray-800 font-poppins">
                   {booking?.car?.name || "Unknown Car"}
                 </h2>
-                <h3
-                  className="text-gray-600 flex items-center gap-1"
-                  style={{ fontFamily: "'Poppins', sans-serif" }}
-                >
+                <h3 className="text-gray-600 flex items-center gap-1 font-poppins">
                   <IoLocation size={16} />
                   {booking?.location || "N/A"}
                 </h3>
@@ -71,20 +70,16 @@ export default function PaymentModal({ setOpen, bookingId }: TModalProps) {
               <div className="bg-gradient-to-r from-yellow-500 to-red-600 text-white w-16 h-16 rounded-full flex justify-center items-center -mt-12 mx-auto">
                 <MdOutlinePayment size={30} />
               </div>
-              <h2
-                className="text-xl font-semibold text-center mt-4 mb-6"
-                style={{
-                  fontFamily: "'Poppins', sans-serif",
-                  background: "linear-gradient(90deg, #F59E0B, #D97706)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
+              <h2 className="text-xl font-semibold text-center mt-4 mb-6 text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-red-600 font-poppins">
                 Secure Payment
               </h2>
 
               <Elements stripe={stripePromise}>
-                <CheckoutForm booking={booking} setOpen={setOpen} />
+                <CheckoutForm 
+                  booking={booking} 
+                  setOpen={setOpen} 
+                  onSuccess={onSuccess} 
+                />
               </Elements>
             </section>
           </>

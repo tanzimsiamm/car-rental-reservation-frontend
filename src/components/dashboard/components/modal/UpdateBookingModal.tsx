@@ -13,12 +13,13 @@ type TModalProps = {
   bookingId: string;
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onSuccess?: () => void;
 };
 
 export default function UpdateBookingModal({
-  open,
   setOpen,
   bookingId,
+  onSuccess,
 }: TModalProps) {
   const {
     register,
@@ -66,6 +67,7 @@ export default function UpdateBookingModal({
       if (response?.success) {
         setOpen(false);
         toast.success("Booking updated successfully");
+        onSuccess?.();
       }
     } catch (error) {
       toast.error("Failed to update booking");
@@ -106,26 +108,19 @@ export default function UpdateBookingModal({
                     "https://via.placeholder.com/150?text=Car+Image";
                 }}
               />
-              <h2
-                className="text-lg font-semibold text-gray-800"
-                style={{ fontFamily: "'Poppins', sans-serif" }}
-              >
+              <h2 className="text-lg font-semibold text-gray-800 font-poppins">
                 {booking?.car?.name || "Unknown Car"}
               </h2>
             </section>
 
             <div className="mb-4">
-              <label
-                className="block text-sm font-medium text-gray-700 mb-1"
-                style={{ fontFamily: "'Poppins', sans-serif" }}
-              >
+              <label className="block text-sm font-medium text-gray-700 mb-1 font-poppins">
                 Location
               </label>
               <input
                 type="text"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none transition-all duration-300"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none transition-all duration-300 font-poppins"
                 {...register("location", { required: "Location is required" })}
-                style={{ fontFamily: "'Poppins', sans-serif" }}
               />
               {errors.location && (
                 <span className="text-red-500 text-sm">
@@ -135,15 +130,12 @@ export default function UpdateBookingModal({
             </div>
 
             <div className="mb-4">
-              <label
-                className="block text-sm font-medium text-gray-700 mb-1"
-                style={{ fontFamily: "'Poppins', sans-serif" }}
-              >
+              <label className="block text-sm font-medium text-gray-700 mb-1 font-poppins">
                 Phone
               </label>
               <input
                 type="text"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none transition-all duration-300"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none transition-all duration-300 font-poppins"
                 {...register("phone", {
                   required: "Phone number is required",
                   pattern: {
@@ -151,7 +143,6 @@ export default function UpdateBookingModal({
                     message: "Invalid phone number",
                   },
                 })}
-                style={{ fontFamily: "'Poppins', sans-serif" }}
               />
               {errors.phone && (
                 <span className="text-red-500 text-sm">
@@ -161,17 +152,13 @@ export default function UpdateBookingModal({
             </div>
 
             <div className="mb-4">
-              <label
-                className="block text-sm font-medium text-gray-700 mb-1"
-                style={{ fontFamily: "'Poppins', sans-serif" }}
-              >
+              <label className="block text-sm font-medium text-gray-700 mb-1 font-poppins">
                 Date
               </label>
               <input
                 type="date"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none transition-all duration-300"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none transition-all duration-300 font-poppins"
                 {...register("date", { required: "Date is required" })}
-                style={{ fontFamily: "'Poppins', sans-serif" }}
               />
               {errors.date && (
                 <span className="text-red-500 text-sm">
@@ -181,19 +168,15 @@ export default function UpdateBookingModal({
             </div>
 
             <div className="mb-4">
-              <label
-                className="block text-sm font-medium text-gray-700 mb-1"
-                style={{ fontFamily: "'Poppins', sans-serif" }}
-              >
+              <label className="block text-sm font-medium text-gray-700 mb-1 font-poppins">
                 Start Time
               </label>
               <input
                 type="time"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none transition-all duration-300"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none transition-all duration-300 font-poppins"
                 {...register("startTime", {
                   required: "Start time is required",
                 })}
-                style={{ fontFamily: "'Poppins', sans-serif" }}
               />
               {errors.startTime && (
                 <span className="text-red-500 text-sm">
@@ -203,18 +186,14 @@ export default function UpdateBookingModal({
             </div>
 
             <div className="mb-6">
-              <label
-                className="block text-sm font-medium text-gray-700 mb-1"
-                style={{ fontFamily: "'Poppins', sans-serif" }}
-              >
+              <label className="block text-sm font-medium text-gray-700 mb-1 font-poppins">
                 Payment Method
               </label>
               <select
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none transition-all duration-300"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none transition-all duration-300 font-poppins"
                 {...register("paymentMethod", {
                   required: "Payment method is required",
                 })}
-                style={{ fontFamily: "'Poppins', sans-serif" }}
               >
                 <option value="stripe">Stripe Payment</option>
                 <option value="amr-pay">Amar Pay</option>
@@ -229,8 +208,7 @@ export default function UpdateBookingModal({
             <div className="flex gap-4">
               <button
                 type="submit"
-                className="w-full bg-yellow-500 text-white py-2 rounded-lg font-semibold hover:bg-yellow-600 focus:ring-2 focus:ring-yellow-500 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ fontFamily: "'Poppins', sans-serif" }}
+                className="w-full bg-yellow-500 text-white py-2 rounded-lg font-semibold hover:bg-yellow-600 focus:ring-2 focus:ring-yellow-500 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed font-poppins"
                 disabled={dataLoading || updateLoading}
               >
                 Modify
@@ -238,8 +216,7 @@ export default function UpdateBookingModal({
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="w-full bg-gray-600 text-white py-2 rounded-lg font-semibold hover:bg-gray-700 focus:ring-2 focus:ring-yellow-500 transition-all duration-300"
-                style={{ fontFamily: "'Poppins', sans-serif" }}
+                className="w-full bg-gray-600 text-white py-2 rounded-lg font-semibold hover:bg-gray-700 focus:ring-2 focus:ring-yellow-500 transition-all duration-300 font-poppins"
               >
                 Close
               </button>

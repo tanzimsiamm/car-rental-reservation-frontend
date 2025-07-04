@@ -1,8 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ClipLoader } from "react-spinners";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { TBooking } from "../../../pages/Booking";
-import { useCreateBookingMutation } from "../../../redux/features/booking/bookingApi";
+import { TBooking } from "../../../pages/Booking"; // Assuming this path is correct
+import { useCreateBookingMutation } from "../../../redux/features/booking/bookingApi"; // Assuming this path is correct
+
+// --- Fallback Image URLs ---
+// It's highly recommended to use local assets for default images
+// Example: import defaultUserImage from '/path/to/assets/default-user.png';
+// Example: import defaultCarImage from '/path/to/assets/default-car.png';
+
+// For demonstration, using external placeholder services. Choose reliable ones.
+const DEFAULT_USER_IMAGE = "https://i.pravatar.cc/150?img=68"; // A commonly used, more reliable avatar placeholder
+const DEFAULT_CAR_IMAGE = "https://via.placeholder.com/200x120?text=No+Car+Image"; // A basic placeholder
 
 type TModalProps = {
   open: boolean;
@@ -18,27 +28,49 @@ export default function ConfirmBookingModal({
   const [createBooking, { isLoading }] = useCreateBookingMutation();
   const navigate = useNavigate();
 
+  // Destructure booking properties with default empty objects/values for safety
+  const {
+    car = {} as TBooking['car'], // Default to an empty car object to prevent errors if car is undefined
+    date = "",
+    location = "",
+    paymentMethod = "",
+    phone = "",
+    startTime = "",
+    user = {} as TBooking['user'], // Default to an empty user object
+  } = booking || {}; // Ensure booking itself is not null/undefined
+
+  // Calculate total cost safely
+  const totalCost = car?.pricePerHour ? car.pricePerHour.toFixed(2) : "0.00";
+
   const handleConfirmBooking = async () => {
+    // Add client-side validation before attempting booking creation if needed
+    if (!booking || !booking.user || !booking.car) {
+      toast.error("Booking data is incomplete. Please try again.");
+      return;
+    }
+
     try {
+      // The `createBooking` mutation expects a `TBooking` object.
+      // Ensure the 'user' and 'car' fields contain the full objects as expected by the frontend TBooking,
+      // but remember on the backend they will be converted to ObjectIds if your schema uses refs.
       const res = await createBooking(booking).unwrap();
+
       if (res?.success) {
         toast.success("Booking confirmed successfully!");
-        setOpen(false);
-        navigate("/cars");
+        setOpen(false); // Close the modal
+        navigate("/cars"); // Redirect after successful booking
       } else {
-        toast.error("Failed to confirm booking");
+        // Handle API success: false, but no explicit error message
+        toast.error(res?.message || "Failed to confirm booking.");
       }
-    } catch (error) {
-      toast.error("An error occurred while confirming the booking");
-      console.error(error);
+    } catch (error: any) {
+      // Handle API errors (e.g., network errors, server-side validation errors)
+      console.error("Booking confirmation error:", error);
+      toast.error(error.data?.message || "An error occurred while confirming the booking.");
     }
   };
 
-  const { car, date, location, paymentMethod, phone, startTime, user } =
-    booking;
-
-  // Calculate total cost (assuming 1-hour booking if no duration is provided)
-  const totalCost = car.pricePerHour.toFixed(2);
+  if (!open) return null; // Render nothing if the modal is not open
 
   return (
     <section className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm overflow-y-auto px-4 md:px-0">
@@ -70,118 +102,107 @@ export default function ConfirmBookingModal({
           <button
             onClick={() => setOpen(false)}
             className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
-            aria-label="Close modal"
+            aria-label="Close booking confirmation modal"
           >
             ×
           </button>
         </div>
 
-        <div className="flex items-center mb-6">
-          <img
-            src={
-              user.image || "https://via.placeholder.com/150?text=User+Image"
-            }
-            alt={`${user.name}'s profile`}
-            className="w-12 h-12 rounded-full mr-4 object-cover"
-            onError={(e) => {
-              e.currentTarget.src =
-                "https://via.placeholder.com/150?text=User+Image";
-            }}
-          />
-          <div>
+        {/* User Info Section */}
+        {user.name || user.email ? ( // Only render if user has at least a name or email
+          <div className="flex items-center mb-6">
+            <img
+              src={user.image || DEFAULT_USER_IMAGE}
+              alt={`${user.name || 'User'}'s profile`}
+              className="w-12 h-12 rounded-full mr-4 object-cover"
+              onError={(e) => {
+                // Set a permanent fallback and prevent further errors for this element
+                e.currentTarget.src = DEFAULT_USER_IMAGE;
+                e.currentTarget.onerror = null;
+              }}
+            />
+            <div>
+              <h3
+                className="text-lg font-semibold text-gray-800"
+                style={{ fontFamily: "'Poppins', sans-serif" }}
+              >
+                {user.name || "N/A"}
+              </h3>
+              <p
+                className="text-sm text-gray-600"
+                style={{ fontFamily: "'Poppins', sans-serif" }}
+              >
+                {user.email || "N/A"}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <p className="text-gray-500 mb-6">User information not available.</p>
+        )}
+
+        {/* Booking Details */}
+        <div className="mb-6">
+          <p className="text-sm text-gray-700 mb-1" style={{ fontFamily: "'Poppins', sans-serif" }}>
+            <span className="font-semibold">Date:</span>{" "}
+            {date ? new Date(date).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }) : "N/A"}
+          </p>
+          <p className="text-sm text-gray-700 mb-1" style={{ fontFamily: "'Poppins', sans-serif" }}>
+            <span className="font-semibold">Phone:</span> {phone || "N/A"}
+          </p>
+          <p className="text-sm text-gray-700" style={{ fontFamily: "'Poppins', sans-serif" }}>
+            <span className="font-semibold">Location:</span> {location || "N/A"}
+          </p>
+        </div>
+
+        {/* Car Info Section */}
+        {car.name || car.images?.[0] ? ( // Only render if car has at least a name or image
+          <div className="mb-6">
+            <img
+              src={car.images?.[0] || DEFAULT_CAR_IMAGE}
+              alt={car.name || "Car Image"}
+              className="w-full h-40 object-cover rounded-lg mb-2"
+              onError={(e) => {
+                // Set a permanent fallback and prevent further errors for this element
+                e.currentTarget.src = DEFAULT_CAR_IMAGE;
+                e.currentTarget.onerror = null;
+              }}
+            />
             <h3
-              className="text-lg font-semibold text-gray-800"
+              className="text-lg font-semibold text-gray-800 mb-1"
               style={{ fontFamily: "'Poppins', sans-serif" }}
             >
-              {user.name}
+              Car: {car.name || "N/A"}
             </h3>
             <p
-              className="text-sm text-gray-600"
+              className="text-sm text-gray-700 mb-1"
               style={{ fontFamily: "'Poppins', sans-serif" }}
             >
-              {user.email}
+              <span className="font-semibold">Features:</span>{" "}
+              {car.features && car.features.length > 0 ? car.features.join(", ") : "N/A"}
+            </p>
+            <p
+              className="text-sm text-gray-700 mb-1"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
+            >
+              <span className="font-semibold">Cost per Hour:</span> ${car.pricePerHour?.toFixed(2) || "0.00"}
+            </p>
+            <p
+              className="text-sm text-gray-700"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
+            >
+              <span className="font-semibold">Payment Method:</span> {paymentMethod || "N/A"}
             </p>
           </div>
-        </div>
+        ) : (
+          <p className="text-gray-500 mb-6">Car information not available.</p>
+        )}
 
-        <div className="mb-6">
-          <p
-            className="text-sm text-gray-700 mb-1"
-            style={{ fontFamily: "'Poppins', sans-serif" }}
-          >
-            <span className="font-semibold">Date:</span>{" "}
-            {new Date(date).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            })}
-          </p>
-          <p
-            className="text-sm text-gray-700 mb-1"
-            style={{ fontFamily: "'Poppins', sans-serif" }}
-          >
-            <span className="font-semibold">Phone:</span> {phone}
-          </p>
-          <p
-            className="text-sm text-gray-700"
-            style={{ fontFamily: "'Poppins', sans-serif" }}
-          >
-            <span className="font-semibold">Location:</span> {location}
-          </p>
-        </div>
-
-        <div className="mb-6">
-          <img
-            src={
-              car.images[0] || "https://via.placeholder.com/150?text=Car+Image"
-            }
-            alt={car.name}
-            className="w-full h-40 object-cover rounded-lg mb-2"
-            onError={(e) => {
-              e.currentTarget.src =
-                "https://via.placeholder.com/150?text=Car+Image";
-            }}
-          />
-          <h3
-            className="text-lg font-semibold text-gray-800 mb-1"
-            style={{ fontFamily: "'Poppins', sans-serif" }}
-          >
-            Car: {car.name}
-          </h3>
-          <p
-            className="text-sm text-gray-700 mb-1"
-            style={{ fontFamily: "'Poppins', sans-serif" }}
-          >
-            <span className="font-semibold">Features:</span>{" "}
-            {car.features.join(", ")}
-          </p>
-          <p
-            className="text-sm text-gray-700 mb-1"
-            style={{ fontFamily: "'Poppins', sans-serif" }}
-          >
-            <span className="font-semibold">Cost per Hour:</span> $
-            {car.pricePerHour.toFixed(2)}
-          </p>
-          <p
-            className="text-sm text-gray-700"
-            style={{ fontFamily: "'Poppins', sans-serif" }}
-          >
-            <span className="font-semibold">Payment Method:</span>{" "}
-            {paymentMethod}
-          </p>
-        </div>
 
         <div className="flex justify-between items-center mb-6">
-          <p
-            className="text-sm text-gray-700"
-            style={{ fontFamily: "'Poppins', sans-serif" }}
-          >
-            <span className="font-semibold">Start Time:</span> {startTime}
+          <p className="text-sm text-gray-700" style={{ fontFamily: "'Poppins', sans-serif" }}>
+            <span className="font-semibold">Start Time:</span> {startTime || "N/A"}
           </p>
-          <p
-            className="text-sm text-gray-700"
-            style={{ fontFamily: "'Poppins', sans-serif" }}
-          >
+          <p className="text-sm text-gray-700" style={{ fontFamily: "'Poppins', sans-serif" }}>
             <span className="font-semibold">Total Cost:</span> ${totalCost}
           </p>
         </div>
@@ -194,7 +215,11 @@ export default function ConfirmBookingModal({
             disabled={isLoading}
             aria-label="Confirm booking"
           >
-            Confirm
+            {isLoading ? (
+              <ClipLoader color="#ffffff" loading={isLoading} size={20} aria-label="Confirming..." />
+            ) : (
+              "Confirm"
+            )}
           </button>
           <button
             onClick={() => setOpen(false)}

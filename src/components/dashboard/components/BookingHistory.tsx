@@ -51,72 +51,82 @@ const BookingHistory = () => {
         </div>
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {bookings.map((booking) => (
-            <div
-              key={booking._id}
-              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
-            >
-              <div className="h-48 overflow-hidden">
-                <img
-                  src={
-                    booking.car.images[0] ||
-                    "https://via.placeholder.com/300?text=Car+Image"
-                  }
-                  alt={booking.car.name || "Car"}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.src =
-                      "https://via.placeholder.com/300?text=Car+Image";
-                  }}
-                />
-              </div>
-              <div className="p-6">
-                <h3
-                  className="text-xl font-semibold text-gray-800"
-                  style={{ fontFamily: "'Poppins', sans-serif" }}
-                >
-                  {booking.car.name} - {booking.car.color}
-                </h3>
-                <div
-                  className="mt-4 text-gray-600 space-y-2 text-sm"
-                  style={{ fontFamily: "'Poppins', sans-serif" }}
-                >
-                  <p>
-                    <strong>Booked by:</strong> {booking.user.name} (
-                    {booking.user.email})
-                  </p>
-                  <p>
-                    <strong>Booking Date:</strong>{" "}
-                    {new Date(booking.date).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </p>
-                  <p>
-                    <strong>Price per Hour:</strong> $
-                    {booking.car.pricePerHour.toFixed(2)}
-                  </p>
-                  <p>
-                    <strong>Car Status:</strong>{" "}
-                    <span
-                      className={
-                        booking.car.status === "available"
-                          ? "text-green-500"
-                          : "text-red-500"
-                      }
-                    >
-                      {booking.car.status}
-                    </span>
-                  </p>
-                  <p>
-                    <strong>Electric:</strong>{" "}
-                    {booking.car.isElectric ? "Yes" : "No"}
-                  </p>
+          {bookings.map((booking) => {
+            const car = booking.car ?? {};
+            const user = booking.user ?? {};
+            const images = Array.isArray(car.images) ? car.images : [];
+
+            return (
+              <div
+                key={booking._id}
+                className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              >
+                <div className="h-48 overflow-hidden">
+                  <img
+                    src={
+                      images.length > 0
+                        ? images[0]
+                        : "https://placehold.co/300x200?text=Car+Image"
+                    }
+                    alt={car.name || "Car"}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.src =
+                        "https://placehold.co/300x200?text=Car+Image";
+                    }}
+                  />
+                </div>
+                <div className="p-6">
+                  <h3
+                    className="text-xl font-semibold text-gray-800"
+                    style={{ fontFamily: "'Poppins', sans-serif" }}
+                  >
+                    {car.name || "Unknown"} - {car.color || "N/A"}
+                  </h3>
+                  <div
+                    className="mt-4 text-gray-600 space-y-2 text-sm"
+                    style={{ fontFamily: "'Poppins', sans-serif" }}
+                  >
+                    <p>
+                      <strong>Booked by:</strong> {user.name || "N/A"} (
+                      {user.email || "N/A"})
+                    </p>
+                    <p>
+                      <strong>Booking Date:</strong>{" "}
+                      {booking.date
+                        ? new Date(booking.date).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })
+                        : "N/A"}
+                    </p>
+                    <p>
+                      <strong>Price per Hour:</strong>{" "}
+                      {typeof car.pricePerHour === "number"
+                        ? `$${car.pricePerHour.toFixed(2)}`
+                        : "N/A"}
+                    </p>
+                    <p>
+                      <strong>Car Status:</strong>{" "}
+                      <span
+                        className={
+                          car.status === "available"
+                            ? "text-green-500"
+                            : "text-red-500"
+                        }
+                      >
+                        {car.status || "Unknown"}
+                      </span>
+                    </p>
+                    <p>
+                      <strong>Electric:</strong> {car.isElectric ? "Yes" : "No"}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

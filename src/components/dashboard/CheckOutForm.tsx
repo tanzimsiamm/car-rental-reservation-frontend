@@ -8,13 +8,17 @@ import { useUpdateBookingMutation } from "../../redux/features/booking/bookingAp
 import { TBooking } from "../../pages/Booking";
 import { useAppSelector } from "../../redux/hooks";
 
+type CheckoutFormProps = {
+  booking: TBooking;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onSuccess?: () => void; // Add the onSuccess prop
+};
+
 export default function CheckoutForm({
   booking,
   setOpen,
-}: {
-  booking: TBooking;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+  onSuccess
+}: CheckoutFormProps) {
   const { _id, totalCost } = booking || {};
   const [savePayment] = useSavePaymentMutation();
   const [updateBooking] = useUpdateBookingMutation();
@@ -58,7 +62,7 @@ export default function CheckoutForm({
       return;
     }
 
-    const { paymentMethod, error } = await stripe.createPaymentMethod({
+    const { error } = await stripe.createPaymentMethod({
       type: "card",
       card,
     });
@@ -104,6 +108,7 @@ export default function CheckoutForm({
         }).unwrap();
         toast.success("Payment Successful");
         setOpen(false);
+        onSuccess?.(); // Call onSuccess after successful payment
       } else {
         toast.error("Failed to save payment");
       }
@@ -114,15 +119,7 @@ export default function CheckoutForm({
   return (
     <section className="max-w-md mx-auto p-6 bg-white rounded-2xl shadow-lg">
       <form onSubmit={handleSubmit}>
-        <h2
-          className="text-xl font-semibold text-center mb-6"
-          style={{
-            fontFamily: "'Poppins', sans-serif",
-            background: "linear-gradient(90deg, #F59E0B, #D97706)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}
-        >
+        <h2 className="text-xl font-semibold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-red-600 font-poppins">
           Total: ${totalCost?.toFixed(2)}
         </h2>
         <div className="mb-6">
@@ -148,9 +145,8 @@ export default function CheckoutForm({
         <div className="flex gap-4">
           <button
             type="submit"
-            className="w-full bg-green-600 text-white py-2 rounded-lg font-semibold hover:bg-green-700 focus:ring-2 focus:ring-yellow-500 transition-all duration-300 flex justify-center items-center disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-green-600 text-white py-2 rounded-lg font-semibold hover:bg-green-700 focus:ring-2 focus:ring-yellow-500 transition-all duration-300 flex justify-center items-center disabled:opacity-50 disabled:cursor-not-allowed font-poppins"
             disabled={!stripe || !elements || loading}
-            style={{ fontFamily: "'Poppins', sans-serif" }}
           >
             {loading ? (
               <ClipLoader
@@ -167,8 +163,7 @@ export default function CheckoutForm({
           <button
             type="button"
             onClick={() => setOpen(false)}
-            className="w-full bg-gray-600 text-white py-2 rounded-lg font-semibold hover:bg-gray-700 focus:ring-2 focus:ring-yellow-500 transition-all duration-300"
-            style={{ fontFamily: "'Poppins', sans-serif" }}
+            className="w-full bg-gray-600 text-white py-2 rounded-lg font-semibold hover:bg-gray-700 focus:ring-2 focus:ring-yellow-500 transition-all duration-300 font-poppins"
           >
             Close
           </button>
