@@ -33,6 +33,7 @@ export default function UpdateBookingModal({
     data,
     isLoading: dataLoading,
     isSuccess,
+    error,
   } = useGetSingleBookingQuery(bookingId);
   const booking: TBooking = data?.data;
 
@@ -90,6 +91,35 @@ export default function UpdateBookingModal({
               aria-label="Loading Spinner"
               speedMultiplier={0.8}
             />
+          </div>
+        )}
+
+        {error && (
+          <div className="text-center">
+            <p className="text-red-500 mb-4">
+              Failed to load booking:{" "}
+              {(error as any)?.data?.message || "Unknown error"}
+            </p>
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              className="w-full bg-gray-600 text-white py-2 rounded-lg font-semibold hover:bg-gray-700 focus:ring-2 focus:ring-yellow-500 transition-all duration-300 font-poppins"
+            >
+              Close
+            </button>
+          </div>
+        )}
+
+        {!booking && !error && !dataLoading && (
+          <div className="text-center">
+            <p className="text-gray-700 mb-4">No booking data found.</p>
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              className="w-full bg-gray-600 text-white py-2 rounded-lg font-semibold hover:bg-gray-700 focus:ring-2 focus:ring-yellow-500 transition-all duration-300 font-poppins"
+            >
+              Close
+            </button>
           </div>
         )}
 

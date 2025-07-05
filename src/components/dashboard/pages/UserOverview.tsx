@@ -133,10 +133,11 @@ const UpdateProfileModal = ({
 
 const UserOverview = () => {
   const [open, setOpen] = useState(false);
-  const state = useAppSelector((state: RootState) => state);
-  const { data, isLoading, error } = useGetSingleUserQuery(
-    state.auth?.user?.email as string
-  );
+  // Select only the user email from the auth slice
+  const userEmail = useAppSelector((state: RootState) => state.auth?.user?.email);
+  const { data, isLoading, error } = useGetSingleUserQuery(userEmail as string, {
+    skip: !userEmail, // Skip query if userEmail is undefined
+  });
 
   const user: TUser = data?.data || {};
 

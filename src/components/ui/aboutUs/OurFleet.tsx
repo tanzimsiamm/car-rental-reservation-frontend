@@ -82,8 +82,14 @@ const OurFleet = () => {
                   alt={vehicle.title}
                   className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300"
                   onError={(e) => {
-                    e.currentTarget.src =
-                      "https://via.placeholder.com/800x600?text=Image+Not+Found";
+                    // Prevent infinite loop by checking if fallback is already set
+                    if (
+                      e.currentTarget.src !==
+                      "https://placehold.co/800x600?text=Image+Not+Found"
+                    ) {
+                      e.currentTarget.src =
+                        "https://placehold.co/800x600?text=Image+Not+Found";
+                    }
                   }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
