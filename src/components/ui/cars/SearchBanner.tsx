@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useGetCarsQuery } from "../../../redux/features/car/carApi";
 import { TCar } from "../../../types";
 import SearchResultBox from "../home/banner/SearchResultBox";
@@ -9,6 +9,20 @@ type TModalProps = {
 
 export default function SearchBanner({ setFilterQuery }: TModalProps) {
   const [searchValue, setSearchValue] = useState("");
+
+  // Dynamically update filterQuery on input change
+  useEffect(() => {
+    setFilterQuery((prev) => {
+      const updated = { ...prev };
+      if (searchValue.trim() === "") {
+        delete updated.location;
+      } else {
+        updated.location = searchValue;
+      }
+      return updated;
+    });
+  }, [searchValue, setFilterQuery]);
+
   const { data } = useGetCarsQuery({
     status: "available",
     location: searchValue,
@@ -63,13 +77,8 @@ export default function SearchBanner({ setFilterQuery }: TModalProps) {
                 </svg>
               </div>
               <input
-                onChange={(e) => {
-                  setSearchValue(e.target.value);
-                  setFilterQuery((prev) => ({
-                    ...prev,
-                    location: e.target.value,
-                  }));
-                }}
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
                 className="h-full w-full outline-none text-zinc-800 text-base placeholder:text-gray-500 bg-transparent"
                 type="text"
                 placeholder="Search cars by location..."

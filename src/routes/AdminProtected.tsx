@@ -21,7 +21,6 @@ export default function AdminProtected({ children }: { children: ReactNode }) {
 
   // decode the jwt token
   const decoded: TJwtDecoded = jwtDecode(token);
-  console.log(decoded);
 
   if (decoded.role === "admin") {
     return children;

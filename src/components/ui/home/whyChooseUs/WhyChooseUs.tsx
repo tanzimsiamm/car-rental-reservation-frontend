@@ -65,7 +65,7 @@ const WhyChooseUs = () => {
         </div>
 
         <div className="flex justify-center mt-10">
-          <Link to="/about">
+          <Link to="/about-us">
             <button className="bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 hover:shadow-lg focus:ring-2 focus:ring-yellow-500 focus:outline-none transition-all duration-300">
               Learn More
             </button>
