@@ -20,6 +20,7 @@ export default function ManageBooking() {
   const [updateBooking, { isLoading: updateLoading }] = useUpdateBookingMutation();
   const [cancelBooking, { isLoading: cancelLoading }] = useCancelBookingMutation();
   const [returnCar] = useReturnCarMutation();
+  console.log(returnCar);
 
   const bookings: TBooking[] = data?.data || [];
 

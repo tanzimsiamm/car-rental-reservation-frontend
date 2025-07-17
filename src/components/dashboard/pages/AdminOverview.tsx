@@ -98,14 +98,15 @@ const AdminOverview = () => {
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Bookings Card */}
             <div className="bg-white rounded-xl shadow-lg p-6 text-center transition-transform duration-300 hover:scale-105">
               <img
-                src="/PngItem_273860.png"
-                alt="Bookings"
+                src="https://cdn-icons-png.flaticon.com/512/3449/3449787.png"
+                alt="Total Bookings Icon"
                 className="mx-auto mb-4 w-16 h-16 object-contain"
                 onError={(e) => {
-                  e.currentTarget.src =
-                    "https://via.placeholder.com/150?text=Icon";
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = "https://via.placeholder.com/64";
                 }}
               />
               <div
@@ -121,14 +122,16 @@ const AdminOverview = () => {
                 Total Bookings
               </div>
             </div>
+
+            {/* Available Cars Card */}
             <div className="bg-white rounded-xl shadow-lg p-6 text-center transition-transform duration-300 hover:scale-105">
               <img
-                src="/pngegg (18).png"
-                alt="Cars"
+                src="https://cdn-icons-png.flaticon.com/512/7436/7436484.png"
+                alt="Available Cars Icon"
                 className="mx-auto mb-4 w-20 h-16 object-contain"
                 onError={(e) => {
-                  e.currentTarget.src =
-                    "https://via.placeholder.com/150?text=Icon";
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = "https://via.placeholder.com/64";
                 }}
               />
               <div
@@ -144,14 +147,16 @@ const AdminOverview = () => {
                 Available Cars
               </div>
             </div>
+
+            {/* Total Revenue Card */}
             <div className="bg-white rounded-xl shadow-lg p-6 text-center transition-transform duration-300 hover:scale-105">
               <img
-                src="/profit.png"
-                alt="Revenue"
+                src="https://cdn-icons-png.flaticon.com/512/3135/3135706.png"
+                alt="Total Revenue Icon"
                 className="mx-auto mb-4 w-16 h-16 object-contain"
                 onError={(e) => {
-                  e.currentTarget.src =
-                    "https://via.placeholder.com/150?text=Icon";
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = "https://via.placeholder.com/64";
                 }}
               />
               <div
@@ -168,6 +173,8 @@ const AdminOverview = () => {
               </div>
             </div>
           </div>
+
+          {/* Bar Chart */}
           <div className="mt-12">
             <h2
               className="text-3xl md:text-4xl font-bold text-center mb-8"

@@ -44,7 +44,7 @@ export default function Banner() {
               <div className="flex gap-8 mb-8">
                 <div className="space-y-2">
                   <h2 className="text-4xl font-bold text-yellow-500">
-                    10<span>+</span>
+                    5<span>+</span>
                   </h2>
                   <p className="text-gray-400">Years Experience</p>
                 </div>
