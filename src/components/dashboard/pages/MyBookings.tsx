@@ -71,10 +71,15 @@ export default function MyBooking() {
   const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
   const [openPayModal, setOpenPayModal] = useState<boolean>(false);
   const [openErrorModal, setOpenErrorModal] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
-  const { data, isLoading: bookingsLoading } = useGetUserBookingsQuery(undefined);
-  const [updateBooking, { isLoading: updateLoading }] = useUpdateBookingMutation();
-  const [cancelBooking, { isLoading: cancelLoading }] = useCancelBookingMutation();
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(
+    undefined
+  );
+  const { data, isLoading: bookingsLoading, refetch } =
+    useGetUserBookingsQuery(undefined);
+  const [updateBooking, { isLoading: updateLoading }] =
+    useUpdateBookingMutation();
+  const [cancelBooking, { isLoading: cancelLoading }] =
+    useCancelBookingMutation();
   const [updateBookingId, setUpdateBookingId] = useState<string>("");
 
   const bookings: TBooking[] = data?.data || [];
@@ -93,7 +98,7 @@ export default function MyBooking() {
 
       if (res?.success) {
         toast.success("Return Request Sent");
-        window.location.reload();
+        await refetch(); // refresh bookings instead of reload
       } else {
         throw new Error("Failed to send return request");
       }
@@ -109,6 +114,7 @@ export default function MyBooking() {
 
       if (res?.success) {
         toast.success("Booking Cancelled!");
+        await refetch(); // refresh bookings
       } else {
         throw new Error("Failed to cancel booking");
       }
@@ -187,59 +193,19 @@ export default function MyBooking() {
 
         {bookings.length > 0 && (
           <>
-            {/* Desktop Table */}
+            {/* DESKTOP TABLE VIEW */}
             <div className="hidden md:block overflow-x-auto">
               <table className="min-w-full text-sm sm:text-base text-gray-700">
                 <thead>
                   <tr className="bg-gradient-to-r from-yellow-500 to-red-600 text-white">
-                    <th
-                      className="px-6 py-4 rounded-tl-xl text-left"
-                      style={{ fontFamily: "'Poppins', sans-serif" }}
-                    >
-                      Image
-                    </th>
-                    <th
-                      className="px-6 py-4 text-left"
-                      style={{ fontFamily: "'Poppins', sans-serif" }}
-                    >
-                      Name
-                    </th>
-                    <th
-                      className="px-6 py-4 text-left"
-                      style={{ fontFamily: "'Poppins', sans-serif" }}
-                    >
-                      Date
-                    </th>
-                    <th
-                      className="px-6 py-4 text-left"
-                      style={{ fontFamily: "'Poppins', sans-serif" }}
-                    >
-                      Price (1H)
-                    </th>
-                    <th
-                      className="px-6 py-4 text-left"
-                      style={{ fontFamily: "'Poppins', sans-serif" }}
-                    >
-                      Status
-                    </th>
-                    <th
-                      className="px-6 py-4 text-left"
-                      style={{ fontFamily: "'Poppins', sans-serif" }}
-                    >
-                      Return
-                    </th>
-                    <th
-                      className="px-6 py-4 text-left"
-                      style={{ fontFamily: "'Poppins', sans-serif" }}
-                    >
-                      Payment
-                    </th>
-                    <th
-                      className="px-6 py-4 rounded-tr-xl text-left"
-                      style={{ fontFamily: "'Poppins', sans-serif" }}
-                    >
-                      Actions
-                    </th>
+                    <th className="px-6 py-4 rounded-tl-xl text-left">Image</th>
+                    <th className="px-6 py-4 text-left">Name</th>
+                    <th className="px-6 py-4 text-left">Date</th>
+                    <th className="px-6 py-4 text-left">Price (1H)</th>
+                    <th className="px-6 py-4 text-left">Status</th>
+                    <th className="px-6 py-4 text-left">Return</th>
+                    <th className="px-6 py-4 text-left">Payment</th>
+                    <th className="px-6 py-4 rounded-tr-xl text-left">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -262,26 +228,15 @@ export default function MyBooking() {
                           }}
                         />
                       </td>
-                      <td
-                        className="px-6 py-4 text-gray-800"
-                        style={{ fontFamily: "'Poppins', sans-serif" }}
-                      >
-                        {booking.car.name}
-                      </td>
-                      <td
-                        className="px-6 py-4 text-gray-600"
-                        style={{ fontFamily: "'Poppins', sans-serif" }}
-                      >
+                      <td className="px-6 py-4">{booking.car.name}</td>
+                      <td className="px-6 py-4">
                         {new Date(booking.date).toLocaleDateString("en-US", {
                           year: "numeric",
                           month: "short",
                           day: "numeric",
                         })}
                       </td>
-                      <td
-                        className="px-6 py-4 text-green-500"
-                        style={{ fontFamily: "'Poppins', sans-serif" }}
-                      >
+                      <td className="px-6 py-4 text-green-500">
                         ${booking.car.pricePerHour.toFixed(2)}
                       </td>
                       <td
@@ -294,7 +249,6 @@ export default function MyBooking() {
                             ? "text-purple-500"
                             : "text-red-500"
                         }`}
-                        style={{ fontFamily: "'Poppins', sans-serif" }}
                       >
                         {booking.status}
                       </td>
@@ -306,17 +260,11 @@ export default function MyBooking() {
                             onClick={() => sendReturnReq(booking._id!)}
                             data-tooltip-id={`return-${booking._id}`}
                             data-tooltip-content="Send Return Request"
-                            aria-label="Send return request"
                           >
                             <BsArrowUpRightSquareFill size={24} />
                           </button>
                         ) : booking.isReturnProcess ? (
-                          <span
-                            className="text-yellow-500"
-                            style={{ fontFamily: "'Poppins', sans-serif" }}
-                          >
-                            In Progress
-                          </span>
+                          <span className="text-yellow-500">In Progress</span>
                         ) : (
                           <span className="text-gray-400">-</span>
                         )}
@@ -325,24 +273,18 @@ export default function MyBooking() {
                       <td className="px-6 py-4">
                         {booking.status === "completed" && !booking.isPaid ? (
                           <button
-                            className="flex items-center gap-1 text-blue-500 hover:text-blue-600 transition-colors duration-200"
+                            className="flex items-center gap-1 text-blue-500 hover:text-blue-600"
                             onClick={() => {
                               setUpdateBookingId(booking._id!);
                               setOpenPayModal(true);
                             }}
                             data-tooltip-id={`pay-${booking._id}`}
                             data-tooltip-content="Make Payment"
-                            style={{ fontFamily: "'Poppins', sans-serif" }}
                           >
                             <SiPayoneer size={20} /> Pay
                           </button>
                         ) : booking.isPaid ? (
-                          <span
-                            className="text-purple-500"
-                            style={{ fontFamily: "'Poppins', sans-serif" }}
-                          >
-                            Paid
-                          </span>
+                          <span className="text-purple-500">Paid</span>
                         ) : (
                           <span className="text-gray-400">-</span>
                         )}
@@ -353,25 +295,26 @@ export default function MyBooking() {
                           booking.status === "approved") && (
                           <div className="flex items-center gap-4">
                             <button
-                              className="text-red-500 hover:text-red-600 transition-colors duration-200"
+                              className="text-red-500 hover:text-red-600"
                               onClick={() =>
-                                cancelBookingIntoDB(booking._id!, booking.car._id!)
+                                cancelBookingIntoDB(
+                                  booking._id!,
+                                  booking.car._id!
+                                )
                               }
                               data-tooltip-id={`cancel-${booking._id}`}
                               data-tooltip-content="Cancel Booking"
-                              aria-label="Cancel booking"
                             >
                               <FcCancel size={24} />
                             </button>
                             <button
-                              className="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                              className="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700"
                               onClick={() => {
                                 setUpdateBookingId(booking._id!);
                                 setOpenUpdateModal(true);
                               }}
                               data-tooltip-id={`edit-${booking._id}`}
                               data-tooltip-content="Modify Booking"
-                              style={{ fontFamily: "'Poppins', sans-serif" }}
                             >
                               <RiEditCircleLine size={20} />
                             </button>
@@ -386,7 +329,7 @@ export default function MyBooking() {
               </table>
             </div>
 
-            {/* Mobile Card View */}
+            {/* MOBILE CARD VIEW */}
             <div className="md:hidden space-y-6 p-6">
               {bookings.map((booking) => (
                 <div
@@ -407,16 +350,10 @@ export default function MyBooking() {
                       }}
                     />
                     <div>
-                      <h3
-                        className="text-lg font-semibold text-gray-800"
-                        style={{ fontFamily: "'Poppins', sans-serif" }}
-                      >
+                      <h3 className="text-lg font-semibold text-gray-800">
                         {booking.car.name}
                       </h3>
-                      <p
-                        className="text-base text-gray-600"
-                        style={{ fontFamily: "'Poppins', sans-serif" }}
-                      >
+                      <p className="text-base text-gray-600">
                         {new Date(booking.date).toLocaleDateString("en-US", {
                           year: "numeric",
                           month: "short",
@@ -425,13 +362,11 @@ export default function MyBooking() {
                       </p>
                     </div>
                   </div>
+
                   <div className="grid grid-cols-2 gap-4 mt-6 text-base">
                     <div>
                       <span className="font-medium">Price (1H):</span>
-                      <span
-                        className="text-green-500 ml-1"
-                        style={{ fontFamily: "'Poppins', sans-serif" }}
-                      >
+                      <span className="text-green-500 ml-1">
                         ${booking.car.pricePerHour.toFixed(2)}
                       </span>
                     </div>
@@ -447,7 +382,6 @@ export default function MyBooking() {
                             ? "text-purple-500"
                             : "text-red-500"
                         }`}
-                        style={{ fontFamily: "'Poppins', sans-serif" }}
                       >
                         {booking.status}
                       </span>
@@ -459,23 +393,14 @@ export default function MyBooking() {
                         <button
                           className="text-violet-600 hover:text-violet-800 ml-1"
                           onClick={() => sendReturnReq(booking._id!)}
-                          data-tooltip-id={`return-${booking._id}`}
-                          data-tooltip-content="Send Return Request"
-                          aria-label="Send return request"
                         >
                           <BsArrowUpRightSquareFill size={20} />
                         </button>
                       ) : booking.isReturnProcess ? (
-                        <span
-                          className="text-yellow-500 ml-1"
-                          style={{ fontFamily: "'Poppins', sans-serif" }}
-                        >
-                          In Progress
-                        </span>
+                        <span className="text-yellow-500 ml-1">In Progress</span>
                       ) : (
                         <span className="text-gray-400 ml-1">-</span>
                       )}
-                      <Tooltip id={`return-${booking._id}`} />
                     </div>
                     <div>
                       <span className="font-medium">Payment:</span>
@@ -486,25 +411,17 @@ export default function MyBooking() {
                             setUpdateBookingId(booking._id!);
                             setOpenPayModal(true);
                           }}
-                          data-tooltip-id={`pay-${booking._id}`}
-                          data-tooltip-content="Make Payment"
-                          style={{ fontFamily: "'Poppins', sans-serif" }}
                         >
                           <SiPayoneer size={18} /> Pay
                         </button>
                       ) : booking.isPaid ? (
-                        <span
-                          className="text-purple-500 ml-1"
-                          style={{ fontFamily: "'Poppins', sans-serif" }}
-                        >
-                          Paid
-                        </span>
+                        <span className="text-purple-500 ml-1">Paid</span>
                       ) : (
                         <span className="text-gray-400 ml-1">-</span>
                       )}
-                      <Tooltip id={`pay-${booking._id}`} />
                     </div>
                   </div>
+
                   {(booking.status === "pending" ||
                     booking.status === "approved") && (
                     <div className="flex justify-end gap-4 mt-6">
@@ -513,26 +430,18 @@ export default function MyBooking() {
                         onClick={() =>
                           cancelBookingIntoDB(booking._id!, booking.car._id!)
                         }
-                        data-tooltip-id={`cancel-${booking._id}`}
-                        data-tooltip-content="Cancel Booking"
-                        aria-label="Cancel booking"
                       >
                         <FcCancel size={24} />
                       </button>
                       <button
-                        className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-base"
+                        className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
                         onClick={() => {
                           setUpdateBookingId(booking._id!);
                           setOpenUpdateModal(true);
                         }}
-                        data-tooltip-id={`edit-${booking._id}`}
-                        data-tooltip-content="Modify Booking"
-                        style={{ fontFamily: "'Poppins', sans-serif" }}
                       >
                         <RiEditCircleLine size={20} />
                       </button>
-                      <Tooltip id={`cancel-${booking._id}`} />
-                      <Tooltip id={`edit-${booking._id}`} />
                     </div>
                   )}
                 </div>

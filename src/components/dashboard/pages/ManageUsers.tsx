@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useCallback, memo } from "react";
 import { ClipLoader } from "react-spinners";
 import Swal from "sweetalert2";
@@ -17,17 +16,17 @@ interface UserCardProps {
 }
 
 const UserCard = memo(({ user, onModify, onDelete }: UserCardProps) => (
-  <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-3 transition-transform duration-200 hover:scale-[1.02]">
-    <div className="flex items-center gap-3">
+  <div className="bg-white rounded-xl shadow-md p-4 sm:p-5 flex flex-col gap-3 sm:gap-4 transition-transform duration-200 hover:scale-[1.02]">
+    <div className="flex items-center gap-3 sm:gap-4">
       <div>
         <h3
-          className="text-gray-800 font-semibold text-base"
+          className="text-gray-800 font-semibold text-base sm:text-lg"
           style={{ fontFamily: "'Poppins', sans-serif" }}
         >
           {user.name}
         </h3>
         <p
-          className="text-gray-600 text-sm"
+          className="text-gray-600 text-sm sm:text-base"
           style={{ fontFamily: "'Poppins', sans-serif" }}
         >
           {user.email}
@@ -36,23 +35,23 @@ const UserCard = memo(({ user, onModify, onDelete }: UserCardProps) => (
     </div>
     <div className="flex justify-between items-center">
       <p
-        className="text-green-500 text-sm font-medium"
+        className="text-green-500 text-sm sm:text-base font-medium"
         style={{ fontFamily: "'Poppins', sans-serif" }}
       >
         {user.role}
       </p>
     </div>
-    <div className="flex gap-2">
+    <div className="flex gap-2 sm:gap-3">
       <button
-        className="flex-1 bg-blue-600 text-white px-3 py-1.5 rounded-lg font-semibold hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-300 text-sm"
+        className="flex-1 bg-blue-600 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg font-semibold hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-300 text-sm sm:text-base flex justify-center items-center"
         onClick={() => onModify(user.email!)}
         style={{ fontFamily: "'Poppins', sans-serif" }}
         aria-label={`Edit ${user.name}`}
       >
-        <MdModeEdit size={20} />
+        <MdModeEdit size={18} className="sm:text-xl" />
       </button>
       <button
-        className="flex-1 bg-red-600 text-white px-3 py-1.5 rounded-lg font-semibold hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:outline-none transition-all duration-300 text-sm"
+        className="flex-1 bg-red-600 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg font-semibold hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:outline-none transition-all duration-300 text-sm sm:text-base"
         onClick={() => onDelete(user._id!)}
         style={{ fontFamily: "'Poppins', sans-serif" }}
         aria-label={`Delete ${user.name}`}
@@ -64,7 +63,7 @@ const UserCard = memo(({ user, onModify, onDelete }: UserCardProps) => (
 ));
 
 const SkeletonLoader = () => (
-  <div className="animate-pulse space-y-4">
+  <div className="animate-pulse space-y-4 px-4 sm:px-6 md:px-0">
     {[...Array(3)].map((_, index) => (
       <div
         key={index}
@@ -120,7 +119,7 @@ export default function ManageUsers() {
               showConfirmButton: false,
             });
           }
-        } catch (error) {
+        } catch {
           Swal.fire({
             title: "Error!",
             text: "Failed to delete user. Please try again.",
@@ -139,7 +138,7 @@ export default function ManageUsers() {
   }, []);
 
   return (
-    <section className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <section className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       <div className="text-center mb-8 sm:mb-12">
         <h2
           className="text-2xl sm:text-3xl md:text-4xl font-bold"
@@ -190,7 +189,6 @@ export default function ManageUsers() {
 
       {!isLoading && users.length > 0 && (
         <>
-          {/* Desktop Table View */}
           <div className="hidden md:block overflow-x-auto bg-white rounded-xl shadow-lg">
             <table className="min-w-full text-sm text-gray-700">
               <thead>
@@ -264,8 +262,7 @@ export default function ManageUsers() {
             </table>
           </div>
 
-          {/* Mobile Card View */}
-          <div className="md:hidden space-y-4">
+          <div className="md:hidden grid grid-cols-1 sm:grid-cols-2 gap-4">
             {users.map((user) => (
               <UserCard
                 key={user._id}

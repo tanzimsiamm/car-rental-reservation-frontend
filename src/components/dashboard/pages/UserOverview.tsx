@@ -54,7 +54,7 @@ const UpdateProfileModal = ({
       } else {
         toast.error(res.message || "Failed to update profile");
       }
-    } catch (error) {
+    } catch {
       toast.error("Failed to update profile. Please try again.");
     }
   };

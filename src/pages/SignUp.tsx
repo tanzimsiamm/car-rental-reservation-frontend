@@ -98,7 +98,7 @@ export default function SignUp() {
             "Unexpected error occurred during sign up!"
         );
       }
-    } catch (error) {
+    } catch {
       toast.error("An unexpected error occurred.");
     } finally {
       setLoading(false);

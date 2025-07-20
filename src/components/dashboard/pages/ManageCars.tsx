@@ -50,7 +50,7 @@ export default function ManageCars() {
           });
           refetch();
         }
-      } catch (error) {
+      } catch {
         Swal.fire({
           title: "Error!",
           text: "Failed to delete car.",
@@ -385,7 +385,7 @@ export default function ManageCars() {
                   <div key={car._id} className="p-4">
                     <div className="flex items-start">
                       <img
-                        className="h-14 w-14 object-cover rounded-lg mr-3"
+                        className="h-20 w-20 object-cover rounded-lg mr-4" // Increased h-14 w-14 to h-20 w-20, mr-3 to mr-4
                         src={
                           car.images[0] ||
                           "https://via.placeholder.com/150?text=Car+Image"
@@ -398,10 +398,10 @@ export default function ManageCars() {
                       />
                       <div className="flex-1">
                         <div className="flex justify-between">
-                          <h3 className="font-medium text-gray-900">
+                          <h3 className="font-medium text-lg text-gray-900"> {/* Increased text-base to text-lg */}
                             {car.name}
                           </h3>
-                          <div className="flex space-x-2">
+                          <div className="flex space-x-3"> {/* Increased space-x-2 to space-x-3 */}
                             <button
                               onClick={() => {
                                 setUpdateProductId(car._id!);
@@ -410,26 +410,26 @@ export default function ManageCars() {
                               className="text-blue-600"
                               title="Edit"
                             >
-                              <FiEdit2 size={16} />
+                              <FiEdit2 size={20} /> {/* Increased size={16} to size={20} */}
                             </button>
                             <button
                               onClick={() => deleteProduct(car._id!)}
                               className="text-red-600"
                               title="Delete"
                             >
-                              <FiTrash2 size={16} />
+                              <FiTrash2 size={20} /> {/* Increased size={16} to size={20} */}
                             </button>
                           </div>
                         </div>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-base text-gray-500"> {/* Increased text-sm to text-base */}
                           {car.carType}
                         </p>
-                        <div className="mt-1 flex flex-wrap gap-1">
-                          <span className="px-1.5 py-0.5 text-xs rounded-full bg-green-100 text-green-800">
+                        <div className="mt-2 flex flex-wrap gap-2"> {/* Increased mt-1 to mt-2, gap-1 to gap-2 */}
+                          <span className="px-2 py-1 text-sm rounded-full bg-green-100 text-green-800"> {/* Increased px-1.5 py-0.5 to px-2 py-1, text-xs to text-sm */}
                             ${car.pricePerHour.toFixed(2)}/hr
                           </span>
                           <span
-                            className={`px-1.5 py-0.5 text-xs rounded-full ${
+                            className={`px-2 py-1 text-sm rounded-full ${ /* Increased px-1.5 py-0.5 to px-2 py-1, text-xs to text-sm */
                               car.status === "available"
                                 ? "bg-green-100 text-green-800"
                                 : "bg-red-100 text-red-800"
