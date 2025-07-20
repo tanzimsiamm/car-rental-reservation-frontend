@@ -16,7 +16,6 @@ type TModalProps = {
 };
 
 export default function UpdateUserModal({
-  open,
   setOpen,
   userEmail,
 }: TModalProps) {
